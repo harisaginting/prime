@@ -1,0 +1,100 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "flag-icon-css@2.9.0",
+        "scope": null,
+        "escapedName": "flag-icon-css",
+        "name": "flag-icon-css",
+        "rawSpec": "2.9.0",
+        "spec": "2.9.0",
+        "type": "version"
+      },
+      "C:\\xampp2\\htdocs\\prime"
+    ]
+  ],
+  "_from": "flag-icon-css@2.9.0",
+  "_id": "flag-icon-css@2.9.0",
+  "_inCache": true,
+  "_location": "/flag-icon-css",
+  "_nodeVersion": "9.0.0",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/flag-icon-css-2.9.0.tgz_1512642284625_0.22436221409589052"
+  },
+  "_npmUser": {
+    "name": "lipis",
+    "email": "lipiridis@gmail.com"
+  },
+  "_npmVersion": "5.5.1",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "flag-icon-css@2.9.0",
+    "scope": null,
+    "escapedName": "flag-icon-css",
+    "name": "flag-icon-css",
+    "rawSpec": "2.9.0",
+    "spec": "2.9.0",
+    "type": "version"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/flag-icon-css/-/flag-icon-css-2.9.0.tgz",
+  "_shasum": "5793c15244e3c63ae36631478a758a3fc29c86be",
+  "_shrinkwrap": null,
+  "_spec": "flag-icon-css@2.9.0",
+  "_where": "C:\\xampp2\\htdocs\\prime",
+  "author": {
+    "name": "Panayiotis Lipiridis",
+    "email": "lipiridis@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/lipis/flag-icon-css/issues"
+  },
+  "dependencies": {},
+  "description": "[![npm version](https://badge.fury.io/js/flag-icon-css.svg)](https://badge.fury.io/js/flag-icon-css) [![Bower version](https://badge.fury.io/bo/flag-icon-css.svg)](https://badge.fury.io/bo/flag-icon-css)",
+  "devDependencies": {
+    "grunt": "1.0.1",
+    "grunt-contrib-connect": "1.0.2",
+    "grunt-contrib-cssmin": "2.2.1",
+    "grunt-contrib-less": "1.4.1",
+    "grunt-contrib-watch": "1.0.0",
+    "svgo": "1.0.3"
+  },
+  "directories": {},
+  "dist": {
+    "integrity": "sha512-SeHvGEB43XFPZiJz6lFFRGHfp+Db+s1qGiClW70cZauQVbPM42wImlNUEuXSXs94kPchz7xvoxP0QK1y6FxLfg==",
+    "shasum": "5793c15244e3c63ae36631478a758a3fc29c86be",
+    "tarball": "https://registry.npmjs.org/flag-icon-css/-/flag-icon-css-2.9.0.tgz"
+  },
+  "gitHead": "af63898c1471d79acf5209a6e8f3a553909d3198",
+  "homepage": "https://github.com/lipis/flag-icon-css#readme",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://opensource.org/licenses/MIT"
+    }
+  ],
+  "maintainers": [
+    {
+      "name": "lipis",
+      "email": "lipiridis@gmail.com"
+    }
+  ],
+  "name": "flag-icon-css",
+  "optionalDependencies": {},
+  "readme": "# flag-icon-css\n\n[![npm version](https://badge.fury.io/js/flag-icon-css.svg)](https://badge.fury.io/js/flag-icon-css)\n[![Bower version](https://badge.fury.io/bo/flag-icon-css.svg)](https://badge.fury.io/bo/flag-icon-css)\n\nA collection of all country flags in SVG — plus the CSS for easier integration.\nSee the [demo](http://lipis.github.io/flag-icon-css/).\n\nInstall\n-------\nYou can either [download](https://github.com/lipis/flag-icon-css/archive/master.zip)\nthe whole project as is or install it via Bower or NPM:\n\n```bash\n$ bower install flag-icon-css\n$ npm install flag-icon-css\n```\n\n## Usage\n\nFor using the flags inline with text add the classes `.flag-icon` and\n`.flag-icon-xx` (where `xx` is the\n[ISO 3166-1-alpha-2 code](https://www.iso.org/obp/ui/#search/code/)\nof a country) to an empty `<span>`. If you want to have a squared version flag\nthen add the class `flag-icon-squared` as well. Example:\n\n```html\n<span class=\"flag-icon flag-icon-gr\"></span>\n<span class=\"flag-icon flag-icon-gr flag-icon-squared\"></span>\n```\n\nYou could also apply this to any element, but in that case you'll have to use the\n`flag-icon-background` instead of `flag-icon` and you're set. This will add the\ncorrect background with the following CSS properties:\n\n```css\nbackground-size: contain;\nbackground-position: 50%;\nbackground-repeat: no-repeat;\n```\n\nWhich means that the flag is just going to appear in the middle of an element, so\nyou will have to set manually the correct size of 4 by 3 ratio or if it's squared\nadd also the `flag-icon-squared` class.\n\n## Development\n\nRun the `npm install` to install the dependencies after cloning the project and\nyou'll be able to:\n\nTo watch for changes and live reload if served\n\n```bash\n$ grunt\n```\n\nTo build `*.less` files\n\n```bash\n$ grunt build\n```\n\nTo serve it on `localhost:8000`\n\n```bash\n$ grunt connect\n```\n\nTo have only specific countries in the css file, remove the ones that you don't\nneed from the\n[`flag-icon-list.less`](https://github.com/lipis/flag-icon-css/blob/master/less/flag-icon-list.less)\nfile and build it again.\n\n## Credits\n\nThis project wouldn't exist without the awesome and now deleted collection of\nSVG flags by [koppi](https://github.com/koppi).\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/lipis/flag-icon-css.git"
+  },
+  "scripts": {
+    "_svgo:min": "svgo",
+    "_svgo:pretty": "svgo --pretty --indent=2 --disable=cleanupIDs",
+    "svgo:min": "npm run _svgo:min -- -f flags/1x1 && npm run _svgo:min -- -f flags/4x3",
+    "svgo:pretty": "npm run _svgo:pretty -- -f flags/1x1 && npm run _svgo:pretty -- -f flags/4x3"
+  },
+  "version": "2.9.0"
+}

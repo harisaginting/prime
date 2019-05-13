@@ -1,0 +1,40 @@
+{
+  "name": "coreui-free-bootstrap-admin-templater",
+  "version": "2.1.12",
+  "description": "Free Bootstrap Admin Template",
+  "keywords": [
+    "admin",
+    "admin panel",
+    "admin template",
+    "bootstrap",
+    "css",
+    "dashboard",
+    "framework",
+    "front-end",
+    "responsive",
+    "sass",
+    "ui kit",
+    "webapp"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coreui/coreui-free-bootstrap-admin-template.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@coreui/coreui": "^2.1.7",
+    "@coreui/coreui-plugin-chartjs-custom-tooltips": "1.2.0",
+    "@coreui/icons": "0.3.0",
+    "bootstrap": "^4.3.1",
+    "chart.js": "2.7.3",
+    "core-js": "^2.6.5",
+    "datatables.net": "^1.10.19",
+    "flag-icon-css": "^3.2.1",
+    "font-awesome": "4.7.0",
+    "jquery": "^3.4.0",
+    "pace-progress": "1.0.2",
+    "perfect-scrollbar": "^1.4.0",
+    "popper.js": "^1.14.7",
+    "simple-line-icons": "2.4.1"
+  }
+}

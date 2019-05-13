@@ -1,0 +1,116 @@
+body{
+	  background-color: #e4e5e6;
+	  background-image: -webkit-linear-gradient(65deg, #a3a3a3 50%, #bebebe 50%);
+}
+
+main{
+	padding: 20px 10px;
+}
+.card-header .card-actions{
+	position: absolute;
+	top: 10px;
+	right: 20px;
+}
+.app-body .main{
+	padding: 0px 10px;
+}
+.app-header{
+	background-color: #fff5;
+	height: 45px;
+}
+
+.app-header .navbar-brand{
+	height: 45px;
+}
+
+.app-body{
+	margin-top: 45px;
+}
+
+.sidebar{
+	background :#960707c2;
+}
+
+.sidebar .nav-link{
+	color:  #e4e5e6;
+
+}
+
+.sidebar .nav-link:hover{
+	background: #c43b3b;
+}
+
+.sidebar .nav-link .nav-icon{
+	font-size: 1rem;
+	
+}
+
+.sidebar .nav-link.active .nav-icon{
+	font-size: 1.2rem;
+	color: #fff;
+}
+
+.sidebar .nav-link.active{
+	background: #ff3c3cb8;
+	font-weight: 700;
+}
+
+.sidebar-fixed .app-header + .app-body .sidebar{
+	height: 85% !important;
+	margin-top: 20px;
+	border-top-right-radius : 15px;
+	border-bottom-right-radius : 15px;
+}
+
+.sidebar .sidebar-minimizer{
+	border-bottom-right-radius : 15px;
+}
+
+.sidebar-minimized .sidebar .sidebar-minimizer{
+	position: relative;
+	border-bottom-right-radius : 15px;
+}
+
+.text-transparant{
+		color: #ffffff30;
+	}
+.text-transparant-dark{
+		color: #00000020;
+	}
+
+.no-padding{
+	padding: 0px !important;
+}
+
+.no-margin{
+	margin:0px;
+}
+
+.card{
+	background-color: #ffffff92;
+}
+
+.bg-darkness{
+	background-color: #00000093;
+}
+
+.card.bg-darkness{
+	border-color: #7a2323;
+}
+
+.text-muted{
+	color: #948c8c !important;
+}
+
+.btn-outline-secondary{
+	color: #696060;
+}
+
+
+table{
+	background: #fff;
+}
+
+.hidden{
+	display: none;
+}

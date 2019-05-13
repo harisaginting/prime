@@ -1,0 +1,14 @@
+RewriteEngine on
+
+RewriteCond $1 !^(index.php|public|asset|media|custom)
+
+RewriteRule ^(.*)$ index.php/$1 [L]
+
+## EXPIRES CACHING ##
+#<FilesMatch "\.(css|js|html|jpg|jpeg|png|gif|swf)$">
+#Header set Cache-Control "max-age=604800, public"
+#</FilesMatch>
+#<ifModule mod_headers.c>
+#    Header set Connection keep-alive
+#</ifModule>
+## EXPIRES CACHING ##
