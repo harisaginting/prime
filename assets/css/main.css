@@ -114,3 +114,22 @@ table{
 .hidden{
 	display: none;
 }
+
+
+.sidebar .sidebar-minimizer{
+	background: rgb(160, 51, 51);
+}
+
+@media (min-width: 992px){
+	.sidebar-minimized .sidebar .sidebar-minimizer{
+		background: rgb(160, 51, 51);
+	}
+
+	.sidebar-minimized .sidebar .nav > .nav-dropdown > .nav-dropdown-items{
+		background: rgb(160, 51, 51);
+	}
+
+	.sidebar-minimized .sidebar .nav-item:hover > .nav-link{
+		background: #e53939;
+	}
+}

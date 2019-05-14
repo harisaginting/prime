@@ -268,6 +268,99 @@ class M_Datatable extends CI_Model
 	## End of Datatable Project Closed
    
 
+   	## Datatable BAST
+	    var $table_bast = 'PRIME_BAST_HGN';
+	    var $column_order_bast = array('H1.NO_SPK',"H1.NAMA_MITRA",'H1.NAMACC','H1.TYPE_BAST','H1.TGL_BAST','TO_NUMBER(H1.NILAI_RP_BAST)','H1.STATUS',null); //set column field database for datatable orderable
+	    var $column_search_bast = array('UPPER(H1.PROJECT_NAME)','UPPER(H1.NO_SPK)','UPPER(H1.NAMACC)','UPPER(H1.NAMA_MITRA)','UPPER(H1.NAMA_PM)','H1.PENANDA_TANGAN','H1.NO_KL','H1.SEGMENT','H1.STATUS','H1.SEGMENT','H1.ID_BAST','H1.NO_BAST'); //set column field database for datatable searchable
+	    var $order = array('DATE_CREATED' => 'desc'); // default order
+	    
+	    public function _get_all_query_bast($status,$mitra2,$segmen,$customer,$spk){
+	          $mitra = $this->session->userdata('mitra');
+	          $nik = $this->session->userdata('nik_sess');
+
+	          if(!empty($this->session->userdata('segmen_sess'))){
+	            $segmen = $this->session->userdata('segmen_sess');
+	          }
+
+
+	             $this->db
+	            ->distinct()
+	            ->select("H1.*,  to_char(TGL_BAST, 'DD MONTH YYYY') TGL_BAST2") 
+	            ->from('PRIME_BAST_HGN H1','H1.ID_BAST = H2.ID_PROJECT');
+	            if($status   != null){$this->db->where('H1.STATUS',$status);}
+	            if($segmen   != null){$this->db->where('H1.SEGMENT',$segmen);}
+	            if($spk      != null){$this->db->where('H1.NO_SPK',$spk);}
+	            if($customer != null){$this->db->where('H1.NIPNAS',$customer);}
+
+	            if($this->session->userdata('tipe_sess') == 'PROJECT_MANAGER' ){
+	            $nama_pm = $this->session->userdata('nama_sess');
+	            $this->db->where('NAMA_PM',$nama_pm);
+	            }
+
+	            if(!empty($mitra) && $nik != 'admin_mitra'){$query = $this->db->where('ID_MITRA',$mitra);}
+	                else{$query = $this->db->where('H1.EXIST','1');}
+
+	            return $query;
+	    }
+
+	    private function _get_datatables_query_bast($searchValue, $orderColumn, $orderDir, $getOrder,$status,$mitra,$segmen,$customer,$spk){
+
+	        $this->_get_all_query_bast($status,$mitra,$segmen,$customer,$spk);
+
+	        $i = 0;
+
+	        foreach ($this->column_search_bast as $item) // loop column
+	        {
+	            if ($searchValue) // if datatable send POST for search
+	            {
+
+	                if ($i === 0) // first loop
+	                {
+	                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+	                    $this->db->like($item, $searchValue);
+	                } else {
+	                    $this->db->or_like($item, $searchValue);
+	                }
+
+	                if (count($this->column_search_bast) - 1 == $i) //last loop
+	                    $this->db->group_end(); //close bracket
+	            }
+	            $i++;
+	        }
+
+	        if(isset($getOrder)) // here order processing
+	        {   
+	                
+	            $this->db->order_by($this->column_order_bast[$orderColumn], $orderDir);
+	        }
+	        else if(isset($this->order_bast))
+	        {
+	            $order = $this->order_bast;
+	            $this->db->order_by(key($order), $order[key($order)]);
+	        }
+	    }
+
+	    function get_table_bast($length, $start, $searchValue, $orderColumn, $orderDir, $getOrder, $status,$mitra,$segmen,$customer,$spk){
+	        $this->_get_datatables_query_bast($searchValue, $orderColumn, $orderDir, $getOrder,$status,$mitra,$segmen,$customer,$spk);
+	        if ($length != -1)
+	            $this->db->limit($length, $start);
+	            $query = $this->db->get();
+	            // echo $this->db->last_query();exit;
+	        return $query->result();
+	    }
+
+	    function count_filtered_table_bast($searchValue, $orderColumn, $orderDir, $getOrder,$status,$mitra,$segmen,$customer,$spk){
+	        $this->_get_datatables_query_bast($searchValue, $orderColumn, $orderDir, $getOrder,$status,$mitra,$segmen,$customer,$spk);
+	        $query = $this->db->get();
+	        return $query->num_rows();
+	    }
+
+	    public function count_all_table_bast($status,$mitra,$segmen,$customer,$spk){
+	        $this->_get_all_query_bast($status,$mitra,$segmen,$customer,$spk);
+	        return $this->db->count_all_results();
+	    }
+	## End of Project Datatable
+
 }
 
   

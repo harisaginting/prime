@@ -175,6 +175,18 @@ class M_Project extends CI_Model
 			return $data;
 
 		}
+		
+	function get_project_actionPlan	($id_issue){
+			$data = $this->db
+					->select("*")
+					->from("PRIME_PROJECT_ACTION_PLAN")
+					->where("ID_ISSUE",$id_issue)
+					->order_by("ACTION_STATUS","DESC")
+					->order_by("ACTION_NAME","ASC")
+					->get()
+					->result_array();
+			return $data;
+		}
 
 	function get_project_acquisition($id_project,$month,$year){
 			if(empty($year)){

@@ -111,7 +111,7 @@
 	
 
 			<div class="card-footer">
-				<button class="btn btn-brand btn-info" type="button" style="margin-bottom: 4px">
+				<button class="btn btn-brand btn-info btn-sm" type="button" style="margin-bottom: 4px">
 						<i class="fa fa-download"></i>
 						<span> Projects Active</span>
 					</button>

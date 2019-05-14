@@ -3,9 +3,9 @@
 class MY_Controller extends CI_Controller {
 
 	// Menampilkan Tema 
-    function adminView($viewName = "", $data = NULL,$title = 'Prime'){
+    function adminView($viewName = "", $data = null,$title = null){
 
-    	$header['title'] 			  = $title; 
+    	$header['title'] 			  = !empty($title) ? $title : 'SDV'; 
 		$CI =& get_instance();
 		$sidebar = array();
 

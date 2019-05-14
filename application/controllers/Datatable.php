@@ -73,6 +73,30 @@ class Datatable extends MY_Controller
         echo json_encode($output);
     }
     
+
+    function bast(){
+        $length = $this->input->post('length');
+        $start  = $this->input->post('start');
+        $searchValue = trim(strtoupper($_POST['search']['value']));
+        $orderColumn = $_POST['order']['0']['column'];
+        $orderDir   = $_POST['order']['0']['dir'];
+        $order      = $this->input->post('order');
+        $status     = $this->input->post('status');
+        $mitra      = $this->input->post('mitra');
+        $segmen     = $this->input->post('segmen');
+        $customer   = $this->input->post('customer');
+        $spk        = $this->input->post('spk');
+       
+        $model = $this->main_model->get_table_bast($length, $start, $searchValue, $orderColumn, $orderDir, $order,$status,$mitra,$segmen,$customer,$spk);
+
+        $output = array(
+            "draw" => $this->input->post('draw'),
+            "recordsTotal" => $this->main_model->count_all_table_bast($status,$mitra,$segmen,$customer,$spk),
+            "recordsFiltered" => $this->main_model->count_filtered_table_bast($searchValue, $orderColumn, $orderDir, $order,$status,$mitra,$segmen,$customer,$spk),
+            "data" => $model,
+        );
+        echo json_encode($output);  
+    }
       
 
 

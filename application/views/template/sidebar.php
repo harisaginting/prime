@@ -12,20 +12,54 @@
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="<?= base_url() ?>">
+              <a class="nav-link" href="<?= base_url() ?>bast">
                 <i class="nav-icon icon-docs"></i> BAST</a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="<?= base_url() ?>">
+              <a class="nav-link" href="<?= base_url() ?>wfm">
                 <i class="nav-icon cui-layers"></i> WFM Data</a>
             </li>
 
-            <li class="nav-title">Admin Menu</li>
+            <li class="nav-item nav-dropdown open">
+              <a class="nav-link nav-dropdown-toggle" href="#">
+              <i class="nav-icon fa fa-area-chart"></i> Monitoring</a>
+              <ul class="nav-dropdown-items">
+                <li class="nav-item">
+                  <a class="nav-link" href="<?= base_url() ?>monitoring/pm">
+                  <i class="nav-icon icon-star"></i> Project Manager
+                  </a>
+                </li>
+              </ul>
+            </li>
+
             <li class="nav-item">
-              <a class="nav-link" href="colors.html">
+              <a class="nav-link" href="<?= base_url() ?>utility">
+                <i class="nav-icon fa fa-wrench"></i> Tools</a>
+            </li>
+
+            <li class="nav-title">Admin Menu</li>
+             <li class="nav-item">
+              <a class="nav-link" href="<?= base_url() ?>user">
                 <i class="nav-icon icon-people"></i> Users</a>
             </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="<?= base_url() ?>master/partner">
+                <i class="nav-icon icon-layers"></i> Partners</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="<?= base_url() ?>master/customer">
+                <i class="nav-icon icon-layers"></i> Customers</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="<?= base_url() ?>master/history">
+                <i class="nav-icon fa fa-history"></i> history</a>
+            </li>
+
+           
             
             
           </ul>

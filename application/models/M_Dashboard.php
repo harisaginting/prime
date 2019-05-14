@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class M_dashboard extends CI_Model {
+class M_Dashboard extends CI_Model {
  
 	function get_total_project_active($type = null){
 		$q = $this->db

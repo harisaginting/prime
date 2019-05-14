@@ -372,7 +372,10 @@ Highcharts.chart('chartBastProgress', {
     },
     exporting: { enabled: false },
     title: {
-        text: ''
+        text: 'BAST Progress',
+        style : {
+          fontSize : '14px'
+        }
     },
     subtitle: {
         text: ''

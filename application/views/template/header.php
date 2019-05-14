@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>CoreUI Free Bootstrap Admin Template</title>
+    <title><?= $title; ?></title>
     <!-- Icons-->
     <link href="<?= base_url(); ?>assets/template/coreui/node_modules/@coreui/icons/css/coreui-icons.min.css" rel="stylesheet">
     <link href="<?= base_url(); ?>assets/template/coreui/node_modules/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
