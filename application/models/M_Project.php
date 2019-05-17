@@ -117,6 +117,7 @@ class M_Project extends CI_Model
 											WHERE ID_PROJECT='$id_project'")->row();
 		}
 
+
 	function get_project_symptoms($id_project){
 			$query = $this->db
 					->select("A.*, TO_CHAR(DATE_CREATED,'DD MONTH YYYY') DATES")
@@ -203,4 +204,287 @@ class M_Project extends CI_Model
 
 		}
 
+	// GET DELIVERABLE 
+	function get_deliverable($id_dev) {
+				$query = $this->db->query("SELECT ID_DELIVERABLE,A.ID_PROJECT,A.NAME,TO_CHAR(WEIGHT,'900.00') WEIGHT,TO_CHAR(A.START_DATE,'MM/DD/YYYY') START_DATE,
+											       TO_CHAR(A.END_DATE,'MM/DD/YYYY') END_DATE,A.DESCRIPTION, NVL(A.PROGRESS_VALUE,0) ACHIEVEMENT, B.ID_LOP_EPIC, STATUS, REASON_OF_DELAY, A.ATTACHMENT, TO_CHAR(A.LAST_UPDATE, 'DD MONTH YYYY, HH24:MI') LAST_UPDATE2
+											FROM PRIME_PROJECT_DELIVERABLES A, PRIME_PROJECT B
+											WHERE A.ID_PROJECT = B.ID_PROJECT
+											AND ID_DELIVERABLE='{$id_dev}'")->row_array();
+				return $query;
+	}
+
+
+	// UPDATE DELIVERABLE
+		function update_deliverable($data){
+					$idPro = $data['ID_PROJECT'];	
+					$idDev = $data['ID_DELIVERABLE'];
+
+					$this->db->set('NAME',  $data['NAME']);
+					$this->db->set('WEIGHT',  $data['WEIGHT']);
+					$this->db->set('DESCRIPTION',  $data['DESCRIPTION']);
+					$this->db->set('PROGRESS_VALUE',$data['PROGRESS_VALUE']);
+					$this->db->set('START_DATE', "to_date('".$data['START_DATE']."','MM/DD/YYYY')",false);
+					$this->db->set('END_DATE', "to_date('".$data['END_DATE']."','MM/DD/YYYY')",false);
+					
+					$this->db->set('LAST_UPDATE', "to_date('".date('m/d/Y H:i:s')."','MM/DD/YYYY HH24:MI:SS')",false);
+					$this->db->set('LAST_UPDATED_BY',  $this->session->userdata('nik_sess'));
+
+					$this->db->where('ID_DELIVERABLE', $data['ID_DELIVERABLE']);
+					$query = $this->db->update('PRIME_PROJECT_DELIVERABLES');
+					// call procedure
+					$this->db->query("call PRIME_MONITORING_PROJ_SINGLE('$idPro')");
+					$this->db->query("BEGIN PRIME_MONITORING_PROJECT_PROC; END;");
+					return $query;
+		}
+
+
+	// ADD ISSUE
+	function add_issue($data) {
+		$this->db->set('ID_ISSUE',  $data['ID_ISSUE']);
+		$this->db->set('ID_PROJECT',  $data['ID_PROJECT']);
+		$this->db->set('ID_DELIVERABLE',  $data['ID_DELIVERABLE']);
+		$this->db->set('ISSUE_NAME',  $data['ISSUE_NAME']);
+		$this->db->set('STATUS_ISSUE',  "OPEN");			
+		$this->db->set('RISK_IMPACT',  $data['RISK_IMPACT']);			
+		$this->db->set('IMPACT',  $data['IMPACT']);
+		$this->db->set('IN_CHARGE',  $data['IN_CHARGE']);
+		$this->db->set('CATEGORY',  $data['CATEGORY']);
+
+
+		$this->db->set('INSERTED_DATE', "to_date('".date('d/m/Y H:i:s')."','DD/MM/YYYY HH24:MI:SS')",false);
+		$this->db->set('INSERTED_BY_ID',  $this->session->userdata('nik_sess'));
+		$this->db->set('INSERTED_BY_NAME',  $this->session->userdata('nama_sess'));
+		$this->db->set('LAST_UPDATED_BY',  $this->session->userdata('nik_sess'));
+		$this->db->set('LAST_UPDATE', "to_date('".date('m/d/Y H:i:s')."','MM/DD/YYYY HH24:MI:SS')",false);
+		
+		return $this->db->insert('PRIME_PROJECT_ISSUE');
+	}
+
+
+	// GET ISSUE
+		function get_issue($id){
+			$q = $this->db
+					->select("A.*, TO_CHAR(A.ISSUE_CLOSED_DATE, 'MM/DD/YYYY') CLOSED_DATE")
+					->from('PRIME_PROJECT_ISSUE A')
+					->where('ID_ISSUE',$id)
+					->get()
+					->row_array();
+			return $q;
+		}
+
+		// UPDATE ISSUE
+		function update_issue($id_issue,$data){
+					$this->db->set('ID_PROJECT',  $data['ID_PROJECT']);
+					$this->db->set('ISSUE_NAME',  $data['ISSUE_NAME']);
+					$this->db->set('RISK_IMPACT',  $data['RISK_IMPACT']);
+					$this->db->set('IMPACT',  $data['IMPACT']);
+					$this->db->set('STATUS_ISSUE',  $data['STATUS_ISSUE']);
+					$this->db->set('IN_CHARGE',  $data['IN_CHARGE']);
+					$this->db->set('CATEGORY',  $data['CATEGORY']);
+					$this->db->set('LAST_UPDATED_BY',  $this->session->userdata('nik_sess'));
+					$this->db->set('LAST_UPDATE', "to_date('".date('m/d/Y H:i:s')."','MM/DD/YYYY HH24:MI:SS')",false);
+					
+					if($data['STATUS_ISSUE'] == 'CLOSED'){
+						$this->db->set('ISSUE_CLOSED_DATE',  "to_date('".$data['ISSUE_CLOSED_DATE']."','MM/DD/YYYY')",false);
+					}
+
+					$this->db->where('ID_ISSUE', $id_issue);
+					return $this->db->update('PRIME_PROJECT_ISSUE');
+		}
+
+
+
+
+	// Update Log Project
+	function updateLogProject($id_project){
+    	$this->db->set('UPDATED_DATE',"TO_DATE('".date('m/d/Y H:i:s')."','MM/DD/YYYY HH24:MI:SS')",FALSE);
+    	$this->db->set('UPDATED_BY_ID',$this->session->userdata('nik_sess'));
+    	$this->db->set('UPDATED_BY_NAME',$this->session->userdata('nama_sess'));
+    	$this->db->where('ID_PROJECT', $id_project);       
+    	return $this->db->update('PRIME_PROJECT');
+    }	
+
+
+   function updateProjectHistory($data){
+        $this->db->set('UPDATED_DATE',"TO_DATE('".date('m/d/Y H:i:s')."','MM/DD/YYYY HH24:MI:SS')",FALSE);
+        $this->db->set('UPDATED_BY_ID',$data['ID_USER']);
+        $this->db->set('UPDATED_BY_NAME',$data['NAME_USER']);
+        $this->db->set('UPDATE_ACTION',$data['STATUS']);
+        $this->db->where('ID_PROJECT',$data['ID']);
+        $this->db->update('PRIME_PROJECT'); 
+       //echo json_encode($data);die;
+       return true;   
+    }
+
+    // ADD ACTION
+	function add_action($data,$dataPIC){
+		$this->db->set('ID_ACTION_PLAN',  $data['ID_ACTION_PLAN']);
+		$this->db->set('ID_PROJECT',  $data['ID_PROJECT']);
+		$this->db->set('ID_ISSUE',  $data['ID_ISSUE']);			
+		$this->db->set('ACTION_NAME',  $data['ACTION_NAME']);
+		$this->db->set('ASSIGN_TO',  $data['ASSIGN_TO']);
+		$this->db->set('ASSIGN_TO_DETAIL',  $data['ASSIGN_TO_DETAIL']);
+		$this->db->set('ACTION_STATUS',  "OPEN");
+		$this->db->set('ACTION_REMARKS',  $data['ACTION_REMARKS']);
+		$this->db->set('DUE_DATE', "to_date('".$data['DUE_DATE']."','MM/DD/YYYY')",false);
+		$this->db->set('INSERTED_DATE', "to_date('".date('m/d/Y H:i:s')."','MM/DD/YYYY HH24:MI:SS')",false);
+		$this->db->set('INSERTED_BY_ID',  $this->session->userdata('nik_sess'));
+		$this->db->set('INSERTED_BY_NAME',  $this->session->userdata('nama_sess'));
+		$this->db->set('LAST_UPDATED_BY',  $this->session->userdata('nik_sess'));
+		$this->db->set('LAST_UPDATE', "to_date('".date('m/d/Y H:i:s')."','MM/DD/YYYY HH24:MI:SS')",false);
+		$query = $this->db->insert('_PROJECT_ACTION_PLAN');
+
+		$idPro = $data['ID_PROJECT'];
+		if(!empty($dataPIC)){
+			$this->db->insert_batch('PRIME_ACTION_PLAN_PIC', $dataPIC);
+		}
+		return true;
+	}
+
+	// UPDATE ACTION
+	function update_action($data,$pic){
+		$this->db->set('ACTION_NAME',  $data['ACTION_NAME']);
+		$this->db->set('ACTION_STATUS',  $data['ACTION_STATUS']);
+		$this->db->set('ACTION_REMARKS',  $data['ACTION_REMARKS']);
+		$this->db->set('LAST_UPDATED_BY',  $this->session->userdata('nik_sess'));
+		$this->db->set('DUE_DATE', "to_date('".$data['DUE_DATE']."','MM/DD/YYYY')",false);
+		if(!empty($data['ACTION_CLOSED_DATE'])){
+			$this->db->set('ACTION_CLOSED_DATE', "to_date('".$data['ACTION_CLOSED_DATE']."','MM/DD/YYYY')",false);
+		}	
+		$this->db->set('LAST_UPDATE', "to_date('".date('m/d/Y H:i:s')."','MM/DD/YYYY HH24:MI:SS')",false);
+		$this->db->where('ID_ACTION_PLAN',$data['ID_ACTION_PLAN']);
+		$this->db->update('PRIME_PROJECT_ACTION_PLAN');
+	
+		$idPro = $data['ID_PROJECT'];
+		//echo $this->db->last_query();die;
+		// $this->db->query("call PRIME_MONITORING_PROJ_SINGLE('$idPro')");
+		if(!empty($pic)){
+			$this->db->where('ID_ACTION_PLAN', $data['ID_ACTION_PLAN']);
+			$this->db->delete('PRIME_ACTION_PLAN_PIC');			
+			$this->db->insert_batch('PRIME_ACTION_PLAN_PIC', $pic);
+		}
+		return true;
+
+	}
+
+
+	function get_action($id){
+			// get project list
+			$dataPro = $this->db->query("	SELECT A.*, B.*, TO_CHAR(A.DUE_DATE,'MM/DD/YYYY') DUE_DATE_N, TO_CHAR(A.LAST_UPDATE, 'DD MONTH YYYY, HH24:MI') LAST_UPDATE2
+											FROM PRIME_PROJECT_ACTION_PLAN A, PRIME_PROJECT_ISSUE B
+											WHERE A.ID_ISSUE = B.ID_ISSUE(+)
+											AND A.ID_ACTION_PLAN='$id'")->row_array();
+
+			// get partnert list
+			$this->db->where('ID_ACTION_PLAN', $id);
+			$dataPart = $this->db->get('PRIME_ACTION_PLAN_PIC')->result_array();
+			$dataPro['pics'] = $dataPart;
+			return $dataPro;
+		}
+
+
+	// DELETE ACTION PLAN
+	function delete_action($id_project,$id_action){
+		$this->db->where('ID_ACTION_PLAN',$id_action);
+		if($this->db->delete('PRIME_PROJECT_ACTION_PLAN')){
+			$this->db->query("call PRIME_MONITORING_PROJ_SINGLE('$id_project')");
+			return true;
+		}
+		return false;
+	}
+
+	// DELETE ISSUE
+	function delete_issue($id_project,$id_issue){
+		$this->db->where('ID_ISSUE',$id_issue);
+		if($this->db->delete('PRIME_PROJECT_ISSUE')){
+			$this->db->query("call PRIME_MONITORING_PROJ_SINGLE('$id_project')");
+			return true;
+		}
+		return false;
+	}
+
+	function delete_deliverable($id_project,$id_deliverable){
+		$this->db->where('ID_DELIVERABLE',$id_deliverable);
+		if($this->db->delete('PRIME_PROJECT_DELIVERABLES')){
+			$this->db->query("call PRIME_MONITORING_PROJ_SINGLE('$id_project')");
+			return true;
+		}
+		return false;
+	}
+
+
+	function add_document($data){
+		$this->db->insert('PRIME_PROJECT_DOCUMENT', $data);
+	}
+
+	// SAVE UPDATE ACQUISITION
+	function update_acquisition($id_project,$month,$year,$data){
+		$method = "add";
+		$id 	= $this->db->select("ID")->from("PRIME_PROJECT_ACQ")
+				 ->where("ID_PROJECT",$id_project)
+				 ->where("MONTH",$month)
+				 ->where("YEAR",$year)
+				 ->get()->row();
+		if(!empty($id)){
+			$method= "update";
+		}
+
+		foreach ($data as $key => $value) {
+				if($key=='UPDATED_DATE'){
+					$this->db->set('UPDATED_DATE', "to_date('".date('d/m/Y H:i:s')."','DD/MM/YYYY HH24:MI:SS')",false);
+					}
+				if(($method=="update")&&($key == "ID")){
+
+				}
+				else{
+					if(!empty($value)){  
+						$this->db->set($key , $value);
+					}
+					
+				}
+		}
+		
+		if($method == "update"){
+			$this->db->where("ID",$id->ID);
+			return $this->db->update("PRIME_PROJECT_ACQ");
+		}else{
+			if(!empty($data['T_VALUE'])){
+				$this->db->set('A_VALUE' , $data['T_VALUE']);
+			}
+			
+			if(!empty($data['T_NOTE'])){
+				$this->db->set('A_NOTE'  , $data['T_NOTE']);
+			}
+			
+			$this->db->set('CREATED_DATE', "to_date('".date('d/m/Y H:i:s')."','DD/MM/YYYY HH24:MI:SS')",false);
+			$this->db->set('CREATED_BY', $this->session->userdata('nik_sess'));
+			return $this->db->insert("PRIME_PROJECT_ACQ");
+		}
+	}
+
+
+	function update_field_project($id_project,$keys,$value){
+			foreach ($keys as $key => $isi) {
+				if($keys[$key]	==	'START_DATE'){
+					$this->db->set("START_DATE","TO_DATE('".$value[$key]."','MM/DD/YYYY')",FALSE);
+					}
+				else if($keys[$key]	 ==	'END_DATE'){
+					$this->db->set("END_DATE","TO_DATE('".$value[$key]."','MM/DD/YYYY')",FALSE);
+					}
+				else{
+						if(!empty($isi)){  
+							$this->db->set($keys[$key] , $value[$key] );
+						}
+					}
+				}
+
+			$this->db->where('ID_PROJECT',$id_project);
+			return $this->db->update('PRIME_PROJECT');
+		}
+
+	// Add Symptom
+	function addSymptom($data){
+		return $this->db->insert('PRIME_PROJECT_SYMPTOM',$data);
+	}
 }

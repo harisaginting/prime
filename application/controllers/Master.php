@@ -23,6 +23,18 @@ class Master extends MY_Controller
         $this->adminView('master/index');
     }
 
+    function get_all_pic(){
+        $q = $this->input->get('q');
+        $data = $this->main_model->get_all_pic($q);
+        echo json_encode($data);
+    }
+
+    function get_all_pic_email(){
+        $q = $this->input->get('q');
+        $data = $this->main_model->get_all_pic_email($q);
+        echo $data['EMAIL']; 
+    }
+
 
 
 }

@@ -28,6 +28,21 @@
     <script src="<?= base_url(); ?>assets/template/coreui/node_modules/chart.js/dist/Chart.min.js"></script>
     <script src="<?= base_url(); ?>assets/template/coreui/node_modules/@coreui/coreui-plugin-chartjs-custom-tooltips/dist/js/custom-tooltips.min.js"></script>
 
+    <!-- Bootstrap File Input -->
+    <link   href="<?=base_url(); ?>assets/plugin/bootstrap-fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+    <script src="<?= base_url(); ?>assets/plugin/bootstrap-fileinput/js/plugins/piexif.min.js" type="text/javascript"></script>
+    <script src="<?= base_url(); ?>assets/plugin/bootstrap-fileinput/js/plugins/sortable.min.js" type="text/javascript"></script>
+    <script src="<?= base_url(); ?>assets/plugin/bootstrap-fileinput/js/plugins/purify.min.js" type="text/javascript"></script>
+    <script src="<?= base_url(); ?>assets/plugin/bootstrap-fileinput/js/fileinput.min.js"></script>
+
+    <!-- Selelct 2-->
+    <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/plugin/select2/css/select2.css">
+    <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/plugin/select2/css/select2-bootstrap.css">
+    <script src="<?= base_url(); ?>assets/plugin/select2/js/select2.full.min.js" type="text/javascript" charset="utf-8"></script>
+    
+    <!-- Bootbox -->
+    <script src="<?= base_url(); ?>assets/plugin/bootbox.min.js"></script>
+
     <!-- Price Format -->
      <script src="<?= base_url(); ?>assets/plugin/jquery.priceformat.js"></script>
 
@@ -47,6 +62,21 @@
     <script src="<?= base_url(); ?>assets/plugin/highchart/code/lib/jspdf.js"></script>
     <script src="<?= base_url(); ?>assets/plugin/highchart/code/lib/rgbcolor.js"></script>
 
+     <!-- moment.js -->
+    <script src="<?= base_url(); ?>assets/plugin/moment/min/moment.min.js"  type="text/javascript"></script>
+    <!-- datepicker -->
+    <link href="<?= base_url(); ?>assets/plugin/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" rel="stylesheet" type="text/css">
+    <script src="<?= base_url(); ?>assets/plugin/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js" type="text/javascript" charset="utf-8"></script> 
+  
+    <!-- Awesomplete -->
+    <link   href="<?= base_url(); ?>assets/plugin/awesomplete/awesomplete.css" media="all" rel="stylesheet" type="text/css" />
+    <script src="<?= base_url(); ?>assets/plugin/awesomplete/awesomplete.min.js"></script>
+
+   <!-- JQUERY VALIDATION -->
+    <script src="<?= base_url(); ?>assets/plugin/jquery-validation/dist/jquery.validate.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="<?= base_url(); ?>assets/plugin/jquery-validation/dist/additional-methods.min.js" type="text/javascript" charset="utf-8"></script>
+
+   <!-- Hands On Table -->
     <script src="<?= base_url(); ?>assets/plugin/handsontable/dist/handsontable.full.js"></script>
     <link   href="<?=base_url(); ?>assets/plugin/handsontable/dist/handsontable.full.min.css" media="all" rel="stylesheet" type="text/css" />
 <script type="text/javascript">

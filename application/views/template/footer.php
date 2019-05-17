@@ -1,15 +1,29 @@
 </main>
     </div>
-    <!-- <footer class="app-footer">
-      <div>
-        <a href="https://coreui.io">CoreUI</a>
-        <span>&copy; 2018 creativeLabs.</span>
-      </div>
-      <div class="ml-auto">
-        <span>Powered by</span>
-        <a href="https://coreui.io">CoreUI</a>
-      </div>
-    </footer> -->
-    
   </body>
+
+
+<script type="text/javascript">
+    $(".Jselect2").select2();
+    $('.date-picker').datepicker({
+        format: "mm/dd/yyyy",
+        disableTouchKeyboard : false,
+        toggleActive: true,
+        forceParse: false,
+        autoclose: true
+    });
+
+    $(".date-picker").attr("autocomplete","off");
+    $(".form-control").attr("autocomplete","off");
+
+    $('.rupiah').priceFormat({
+        prefix: 'Rp. ',
+        centsSeparator: ',',
+        thousandsSeparator: '.',
+        centsLimit: 0
+    });
+    $('.fileinput').fileinput();
+</script>
+
+
 </html>

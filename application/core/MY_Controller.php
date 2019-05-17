@@ -3,9 +3,6 @@
 class MY_Controller extends CI_Controller {
 
 	// Menampilkan Tema 
-
-	// $this->adminView('tampilan_belajar',$data,'BELAJAR');
-	
     function adminView($viewName = "", $data = null,$title = null){
 
     	$header['title'] 			  = !empty($title) ? $title : 'SDV'; 
@@ -226,7 +223,8 @@ class MY_Controller extends CI_Controller {
   ##LOG
 	public function addLog($id,$status,$type,$meta_data=null){
 		$CI =& get_instance();
-	    $CI->load->model('Master_model');
+	    $CI->load->model('M_Project','m_project');
+	    $CI->load->model('M_Master','master');
 	    $ip = $this->input->ip_address();
 	    $data = array(
             'ID_HISTORY'    => $this->getGUID(),
@@ -239,13 +237,22 @@ class MY_Controller extends CI_Controller {
             'TYPE'          => $type,
             'IP'			=> $ip
         ); 
-	    $CI->Master_model->updateProjectHistory($data);
-	    return $CI->Master_model->addLog($data);
+	    $CI->m_project->updateProjectHistory($data);
+	    return $CI->master->addLog($data);
 	}
+
+
+	function get_sequence($table) {
+		$this->CI =& get_instance();	
+		$query = $this->CI->db->query("	SELECT $table.nextVal AS ID
+										FROM DUAL")->row_array();
+		return $query;
+	}
+
 
 	public function add_credit_point($category,$title,$content,$point,$meta = null){
 		$CI =& get_instance();
-	    $CI->load->model('Master_model');
+	    $CI->load->model('M_user','user');
 
 
 	    $data_insert['ID']			= $this->getGUID();
@@ -258,14 +265,14 @@ class MY_Controller extends CI_Controller {
         $data_insert['META_DATA']   = $meta;
 
         if(!empty($meta)){
-        	$check = $CI->Master_model->checkCreditPoint($title,$content,$meta);
+        	$check = $CI->user->checkCreditPoint($title,$content,$meta);
         	if($check < 1){
-        		return $CI->Master_model->addCreditPoint($data_insert);
+        		return $CI->user->addCreditPoint($data_insert);
         	}else{
         		return true;
         	}
         }
-	    return $CI->Master_model->addCreditPoint($data_insert);
+	    return $CI->user->addCreditPoint($data_insert);
 	}
 
 	function getNotification(){
