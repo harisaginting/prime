@@ -3,6 +3,9 @@
 class MY_Controller extends CI_Controller {
 
 	// Menampilkan Tema 
+
+	// $this->adminView('tampilan_belajar',$data,'BELAJAR');
+	
     function adminView($viewName = "", $data = null,$title = null){
 
     	$header['title'] 			  = !empty($title) ? $title : 'SDV'; 

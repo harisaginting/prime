@@ -10,7 +10,7 @@ class Master extends MY_Controller
     }
 
     function partner(){
-    	$this->adminView('master/index');
+    	$this->adminView('master/partner');
     }
 
 

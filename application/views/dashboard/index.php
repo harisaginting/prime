@@ -15,7 +15,7 @@
 <div class="row">
    <div class="col-md-4">
    		<div class="row">
-   			<div class="col-md-6">
+   			<div class="col-md-6" style="width: 100%">
 		   		<div class="card bg-darkness">
 						<div class="card-body">
 							<div class="h1 text-right text-transparant mb-4 icon-bg">
@@ -27,7 +27,7 @@
 					</div>
 		   	</div>
 		   	<div class="col-md-6">
-		   		<div class="card bg-darkness">
+		   		<div class="card bg-darkness" style="width: 100%">
 						<div class="card-body">
 							<div class="h1 text-right text-transparant mb-4 icon-bg">
 								<i class="icon-people" ></i>
@@ -39,10 +39,10 @@
 		   	</div>
    		</div>	
 
-		<div id="chartProjectScale"></div>
+		<div id="chartProjectScale" style="width: 100%"></div>
 	</div>
 	<div class="col-md-8">
-		<div id="chartProjectStatus"></div>
+		<div id="chartProjectStatus" style="width: 100%"></div>
 	</div>
 
 
@@ -104,7 +104,9 @@
 
 
 <script type="text/javascript">
-      var colors = Highcharts.getOptions().colors,
+
+function init(){
+        var colors = Highcharts.getOptions().colors,
           categories = [
               "BIG",
               "MEGA",
@@ -153,11 +155,11 @@
               }
           },
           legend: {
-	          itemStyle: {
-	                color: '#efefef',
-	                fontSize : '10px'
-	              },
-	      },
+            itemStyle: {
+                  color: '#efefef',
+                  fontSize : '10px'
+                },
+        },
           series: [{
               name: 'Total Projects',
               data: projectScale,
@@ -271,7 +273,7 @@
             {
               name: 'Total Projects',
               data: versionsData,
-              size: '80%',
+              size: '75%',
               innerSize: '75%',
               dataLabels: {
                   style: {
@@ -306,7 +308,7 @@
 
 Highcharts.chart('chartBast', {
     chart: {
-    	backgroundColor:'#ffffffc2',
+      backgroundColor:'#ffffffc2',
         type: 'column',
         height: '200px'
     },
@@ -366,7 +368,7 @@ Highcharts.chart('chartBast', {
 
 Highcharts.chart('chartBastProgress', {
     chart: {
-    	backgroundColor:'#ffffffc2',
+      backgroundColor:'#ffffffc2',
         type: 'column',
         height :'200px;'
     },
@@ -661,6 +663,12 @@ var c_region1 = '#00aced';
           enabled: false
       },
       series: <?= json_encode($segmen_status); ?>
+  });
+}
+
+  init();
+
+  $(document).on('click','.navbar-toggler-icon',function(){
   });
 
 </script>

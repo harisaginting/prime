@@ -6,6 +6,13 @@
             </li>
 
             <li class="nav-item">
+               <a class="nav-link nav-link-hgn <?= $this->uri->segment(1)=="belajar" ? 'active' : ''; ?>" id="menu-project-active" href="<?= base_url(); ?>belajar">
+                <i class="nav-icon icon-rocket"></i> belajar
+              </a>
+            </li>
+
+
+            <li class="nav-item">
                <a class="nav-link nav-link-hgn <?= $this->uri->segment(1)=="project" ? 'active' : ''; ?>" id="menu-project-active" href="<?= base_url(); ?>project">
                 <i class="nav-icon icon-rocket"></i> Projects
               </a>

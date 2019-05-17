@@ -139,25 +139,3 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
-
-$db['epicdb'] = array(
-	'dsn'	=> '',
-	'hostname' => '10.62.13.150:1525/desdb',
-	'username' => 'amdes',
-	'password' => 'des_isc_098',
-	'database' => '',
-	'dbdriver' => 'oci8',
-	'dbprefix' => '',
-	'pconnect' => FALSE,
-	'db_debug' => (ENVIRONMENT !== 'production'),
-	'cache_on' => FALSE,
-	'cachedir' => '',
-	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
-	'swap_pre' => '',
-	'encrypt' => FALSE,
-	'compress' => TRUE,
-	'stricton' => FALSE,
-	'failover' => array(),
-	'save_queries' => TRUE
-);

@@ -97,8 +97,28 @@ class Datatable extends MY_Controller
         );
         echo json_encode($output);  
     }
-      
 
+
+    // MASTER
+    function user(){
+        $length         = $this->input->post('length');
+        $start          = $this->input->post('start');
+        $searchValue    = trim(strtoupper($_POST['search']['value']));
+        $orderColumn    = $_POST['order']['0']['column'];
+        $orderDir       = $_POST['order']['0']['dir'];
+        $order          = $this->input->post('order');
+       
+        $model = $this->main_model->get_table_user($length, $start, $searchValue, $orderColumn, $orderDir, $order);
+
+        $output = array(
+            "draw" => $this->input->post('draw'),
+            "recordsTotal" => $this->main_model->count_all_table_user(),
+            "recordsFiltered" => $this->main_model->count_filtered_table_user($searchValue, $orderColumn, $orderDir, $order),
+            "data" => $model,
+        );
+        echo json_encode($output);  
+    }
+    
 
 
 }
