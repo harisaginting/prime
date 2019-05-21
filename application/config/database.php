@@ -125,7 +125,7 @@ $db['default'] = array(
 	'password' => 'usr#pjm123',
 	'database' => '',
 	'dbdriver' => 'oci8',
-	'dbprefix' => 'PRIME', //PRIME
+	'dbprefix' => '', //PRIME
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
 	'cache_on' => FALSE,

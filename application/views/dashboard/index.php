@@ -228,7 +228,8 @@ function init(){
       Highcharts.chart('chartProjectStatus', {
           chart: {
               type: 'pie',
-              backgroundColor : '#ffffffc2',
+              backgroundColor : '#e5e6e6',
+              plotBackgroundImage: '<?= base_url() ?>assets/img/bg01.png'
           },
           title: {
                   text: ''

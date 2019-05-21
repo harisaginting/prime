@@ -163,3 +163,14 @@ thead{
 .table-condensed thead{
 	background: #20a8d8;
 }
+
+.sidebar .nav-link .nav-icon{
+	color: #e3e3e3;
+}
+
+.nav-title{
+	background: #900101;
+	color: #d4d4d4;
+	padding: 5px 20px !important;
+	font-size: 9px;
+}

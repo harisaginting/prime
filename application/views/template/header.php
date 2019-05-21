@@ -83,14 +83,14 @@
   const base_url = "<?=base_url(); ?>";
 </script>
   </head>
-  <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+  <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show <?= ($this->uri->segment(1)=="dashboard")||($this->uri->segment(1)=="") ? 'brand-minimized sidebar-minimized' : ''; ?>  "> 
     <header class="app-header navbar">
       <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
         <span class="navbar-toggler-icon"></span>
       </button>
       <a class="navbar-brand" href="#">
         <img class="navbar-brand-full" src="<?= base_url(); ?>assets/img/logo.png" width="110" height="40" alt="CoreUI Logo">
-        <img class="navbar-brand-minimized" src="<?= base_url(); ?>assets/template/coreui/src/img/brand/sygnet.svg" width="30" height="30" alt="CoreUI Logo">
+        <img class="navbar-brand-minimized" src="<?= base_url(); ?>assets/img/logo_sdv.png" width="50" height="30" alt="CoreUI Logo">
       </a>
       <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
         <span class="navbar-toggler-icon"></span>

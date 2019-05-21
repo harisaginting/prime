@@ -363,13 +363,13 @@ class M_Datatable extends CI_Model
 
 	## Datatable User
 	    var $table_user = 'PRIME_USERS';
-	    var $column_order_user = array(null,null,null); //set column field database for datatable orderable
+	    var $column_order_user = array('ID','NAME',null); //set column field database for datatable orderable
 	    var $column_search_user = array('UPPER(NAMA)'); //set column field database for datatable searchable
 	    var $order_user = array('NAMA' => 'asc'); // default order
 	    
 	    public function _get_all_query_user(){
 		        $data = $this->db
-		        		->select("*")
+		        		->select("NIK ID,NAMA NAME,TIPE ROLE, DIVISI DIVISION, EMAIL, NO_HP PHONE")
 		        		->from("PRIME_USERS");
 	            return $data;
 	    }
@@ -432,7 +432,155 @@ class M_Datatable extends CI_Model
 	    }
 	## End of User
 
+	## Datatable customer
+        var $table_customer = 'CBASE_DIVES';
+        var $column_order_customer = array('NIPNAS','NAME',null,null,null,null); //set column field database for datatable orderable
+        var $column_search_customer = array('UPPER(STANDARD_NAME)','UPPER(AM)','UPPER(SEGMEN)','UPPER(NIPNAS)'); //set column field database for datatable searchable
+        var $order_customer = array('NAME' => 'asc'); // default order
+        
+        public function _get_all_query_customer(){
+                $data = $this->db
+                        ->select("NIP_NAS NIPNAS, STANDARD_NAME NAME,AM, SEGMEN")
+                        ->from("CBASE_DIVES A")
+                        ->join("(SELECT NIPNAS, LISTAGG(A.NAMA_AM, ',') 
+	                                  WITHIN GROUP (ORDER BY A.NIPNAS) AS AM
+	                                  FROM PRIME_AM_CC A
+	                                  GROUP BY NIPNAS
+	                                  ) B",
+	                                  "B.NIPNAS = A.NIP_NAS","LEFT");
+                return $data;
+        }
 
+        private function _get_datatables_query_customer($searchValue, $orderColumn, $orderDir, $getOrder){
+
+            $this->_get_all_query_customer();
+
+            $i = 0;
+
+            foreach ($this->column_search_customer as $item) // loop column
+            {
+                if ($searchValue) // if datatable send POST for search
+                {
+
+                    if ($i === 0) // first loop
+                    {
+                        $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                        $this->db->like($item, $searchValue);
+                    } else {
+                        $this->db->or_like($item, $searchValue);
+                    }
+
+                    if (count($this->column_search_customer) - 1 == $i) //last loop
+                        $this->db->group_end(); //close bracket
+                }
+                $i++;
+            }
+
+            if(isset($getOrder)) // here order processing
+            {   
+                    
+                $this->db->order_by($this->column_order_customer[$orderColumn], $orderDir);
+            }
+            else if(isset($this->order_customer))
+            {
+                $order = $this->order_customer;
+                $this->db->order_by(key($order), $order[key($order)]);
+            }
+        }
+
+        function get_table_customer($length, $start, $searchValue, $orderColumn, $orderDir, $getOrder){
+            $this->_get_datatables_query_customer($searchValue, $orderColumn, $orderDir, $getOrder);
+            if ($length != -1)
+                $this->db->limit($length, $start);
+                $query = $this->db->get();
+                // echo $this->db->last_query();exit;
+            return $query->result();
+        }
+
+        function count_filtered_table_customer($searchValue, $orderColumn, $orderDir, $getOrder){
+            $this->_get_datatables_query_customer($searchValue, $orderColumn, $orderDir, $getOrder);
+            $query = $this->db->get();
+            return $query->num_rows();
+        }
+
+        public function count_all_table_customer(){
+            $this->_get_all_query_customer();
+            return $this->db->count_all_results();
+        }
+    ## End of customer
+
+   	## Datatable wfmValid
+        var $table_wfmValid = 'PRIME_NO_QUOTE_SO';
+        var $column_order_wfmValid = array('DATE_UPDATED','NAME',null,null,null,null); //set column field database for datatable orderable
+        var $column_search_wfmValid = array('UPPER(STANDARD_NAME)','UPPER(AM)','UPPER(SEGMEN)','UPPER(NIPNAS)'); //set column field database for datatable searchable
+        var $order_wfmValid = array('NO_P8' => 'DESC'); // default order
+        
+        public function _get_all_query_wfmValid(){
+                $data = $this->db
+                        ->select("A.*,B.PROJECT_NAME")
+                        ->from("PRIME_NO_QUOTE_SO A")
+                        ->join("PRIME_BAST_HGN B","B.NO_SPK = A.NO_P8","LEFT")
+                        ->where("A.ID_LOP is not null OR A.NO_P8 IS NOT NULL OR A.ID_ROW IS NOT NULL");
+                return $data;
+        }
+
+        private function _get_datatables_query_wfmValid($searchValue, $orderColumn, $orderDir, $getOrder){
+
+            $this->_get_all_query_wfmValid();
+
+            $i = 0;
+
+            foreach ($this->column_search_wfmValid as $item) // loop column
+            {
+                if ($searchValue) // if datatable send POST for search
+                {
+
+                    if ($i === 0) // first loop
+                    {
+                        $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                        $this->db->like($item, $searchValue);
+                    } else {
+                        $this->db->or_like($item, $searchValue);
+                    }
+
+                    if (count($this->column_search_wfmValid) - 1 == $i) //last loop
+                        $this->db->group_end(); //close bracket
+                }
+                $i++;
+            }
+
+            if(isset($getOrder)) // here order processing
+            {   
+                    
+                $this->db->order_by($this->column_order_wfmValid[$orderColumn], $orderDir);
+            }
+            else if(isset($this->order_wfmValid))
+            {
+                $order = $this->order_wfmValid;
+                $this->db->order_by(key($order), $order[key($order)]);
+            }
+        }
+
+        function get_table_wfmValid($length, $start, $searchValue, $orderColumn, $orderDir, $getOrder){
+            $this->_get_datatables_query_wfmValid($searchValue, $orderColumn, $orderDir, $getOrder);
+            if ($length != -1)
+                $this->db->limit($length, $start);
+                $query = $this->db->get();
+                // echo $this->db->last_query();exit;
+            return $query->result();
+        }
+
+        function count_filtered_table_wfmValid($searchValue, $orderColumn, $orderDir, $getOrder){
+            $this->_get_datatables_query_wfmValid($searchValue, $orderColumn, $orderDir, $getOrder);
+            $query = $this->db->get();
+            return $query->num_rows();
+        }
+
+        public function count_all_table_wfmValid(){
+            $this->_get_all_query_wfmValid();
+            return $this->db->count_all_results();
+        }
+    ## End of wfmValid
 }
 
   

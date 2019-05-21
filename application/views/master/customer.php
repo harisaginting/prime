@@ -4,7 +4,7 @@
 			<div class="card-body">
 				<div class="row">
 					<div class="col-sm-5">
-						<h4 class="card-title mb-0">List Partners</h4>
+						<h4 class="card-title mb-0">List Customers</h4>
 						<div class="small text-muted">Service Delivery</div>
 					</div>
 
@@ -14,14 +14,14 @@
 					</div>
 				
 					<div class="col-sm-12">
-						<table 	id="dataPartner" 
+						<table 	id="dataCustomer" 
 								class="table table-responsive-sm table-bordered" style="width: 100%;margin-top: 10px;">
 							<thead>
 								<tr>
-									<th style="width: 10%">ID</th>
+									<th style="width: 10%">NIPNAS</th>
 									<th style="width: 40%">NAME</th>
-									<th style="width: 20%">EMAIL</th>
-									<th style="width: 20%">STATUS</th>
+									<th style="width: 20%">SEGMEN</th>
+									<th style="width: 20%">AM</th>
 									<th style="width: 10%"></th>
 								</tr>
 							</thead>
@@ -39,7 +39,7 @@
 			<div class="card-footer">
 				<button class="btn btn-brand btn-info btn-sm" type="button" style="margin-bottom: 4px">
 						<i class="fa fa-download"></i>
-						<span> Partners</span>
+						<span> Customers</span>
 					</button>
 			</div>
 
@@ -52,34 +52,34 @@
   var Page = function () {
     var tableInit = function(){    
 
-        var table = $('#dataPartner').DataTable({
+        var table = $('#dataCustomer').DataTable({
                     processing: true,
                     serverSide: true,
                     ajax: { 
-                        'url'  :base_url+'datatable/partner', 
+                        'url'  :base_url+'datatable/customer', 
                         'type' :'POST',
                     },
                     aoColumns: [
-                                { mData: 'ID'},
+                                { mData: 'NIPNAS'},
                                 { mData: 'NAME'},
+                                { mData: 'SEGMEN'},
                                 {
                                   mRender : function(data, type, obj){   
                                   			let v = "-";
-                                  			if(obj.EMAIL != null){
-                                  				let email = obj.EMAIL.split(';');
+                                  			if(obj.AM != null){
+                                  				let am = obj.AM.split(',');
                                   				v = "";
-	                                            email.forEach(function(entry) {
-												    v = entry + "<br>"; 
-												});
-                                  			}
+	                                            am.forEach(function(entry) {
+                    												    v = v+"<i class='fa fa-user-circle'></i> <small>"+entry + "</small><br>"; 
+                    												    });
+                                            }
                                             return v;   
                                     }            
                                 },
-                                { mData: 'STATUS'},
                                 {
                                   mRender : function(data, type, obj){   
-                                  			let dlt 	= "<button class='w-100 text-left btn btn-sm btn-danger btn-brand delete_partner' data-id='"+obj.ID+"'><i class='fa fa-trash'></i> <span>Delete</span></button>";
-                                  			let edt  	= "<button class='w-100 text-left btn btn-sm btn-info btn-brand edit_partner' data-id='"+obj.ID+"' data-email='"+obj.EMAIL+"' ><i class='fa fa-edit'></i> <span>Edit</span></button>";
+                                  			let dlt 	= "<button class='w-100 text-left btn btn-sm btn-danger btn-brand delete_customer' data-id='"+obj.NIPNAS+"'><i class='fa fa-trash'></i> <span>Delete</span></button>";
+                                  			let edt  	= "<button class='w-100 text-left btn btn-sm btn-info btn-brand edit_customer' data-id='"+obj.NIPNAS+"' ><i class='fa fa-edit'></i> <span>Edit</span></button>";
                                             return edt+dlt;   
                                     }            
                                 },
@@ -91,21 +91,20 @@
             tableInit();    
             $(document).on('change','.searchOnTable', function (e) {
               e.stopImmediatePropagation();
-              $('#dataPartner').dataTable().fnDestroy();
+              $('#datacustomer').dataTable().fnDestroy();
               tableInit();
               });
 
 
 
-            $(document).on('click','.delete_partner',function(e){
+            $(document).on('click','.delete_customer',function(e){
             	e.stopImmediatePropagation();
             	console.log($(this).data('id'));
             });
 
-            $(document).on('click','.edit_partner',function(e){
+            $(document).on('click','.edit_customer',function(e){
             	e.stopImmediatePropagation();
             	console.log($(this).data('id'));
-            	console.log($(this).data('email'));
             });
            }
       };

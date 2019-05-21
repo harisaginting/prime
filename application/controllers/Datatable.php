@@ -118,6 +118,64 @@ class Datatable extends MY_Controller
         );
         echo json_encode($output);  
     }
+
+
+    function partner(){
+        $length         = $this->input->post('length');
+        $start          = $this->input->post('start');
+        $searchValue    = trim(strtoupper($_POST['search']['value']));
+        $orderColumn    = $_POST['order']['0']['column'];
+        $orderDir       = $_POST['order']['0']['dir'];
+        $order          = $this->input->post('order');
+       
+        $model = $this->main_model->get_table_partner($length, $start, $searchValue, $orderColumn, $orderDir, $order);
+
+        $output = array(
+            "draw" => $this->input->post('draw'),
+            "recordsTotal" => $this->main_model->count_all_table_partner(),
+            "recordsFiltered" => $this->main_model->count_filtered_table_partner($searchValue, $orderColumn, $orderDir, $order),
+            "data" => $model,
+        );
+        echo json_encode($output);  
+    }
+
+    function customer(){
+        $length         = $this->input->post('length');
+        $start          = $this->input->post('start');
+        $searchValue    = trim(strtoupper($_POST['search']['value']));
+        $orderColumn    = $_POST['order']['0']['column'];
+        $orderDir       = $_POST['order']['0']['dir'];
+        $order          = $this->input->post('order');
+       
+        $model = $this->main_model->get_table_customer($length, $start, $searchValue, $orderColumn, $orderDir, $order);
+
+        $output = array(
+            "draw" => $this->input->post('draw'),
+            "recordsTotal" => $this->main_model->count_all_table_customer(),
+            "recordsFiltered" => $this->main_model->count_filtered_table_customer($searchValue, $orderColumn, $orderDir, $order),
+            "data" => $model,
+        );
+        echo json_encode($output);  
+    }
+
+    function wfmValid(){
+        $length         = $this->input->post('length');
+        $start          = $this->input->post('start');
+        $searchValue    = trim(strtoupper($_POST['search']['value']));
+        $orderColumn    = $_POST['order']['0']['column'];
+        $orderDir       = $_POST['order']['0']['dir'];
+        $order          = $this->input->post('order');
+       
+        $model = $this->main_model->get_table_wfmValid($length, $start, $searchValue, $orderColumn, $orderDir, $order);
+
+        $output = array(
+            "draw" => $this->input->post('draw'),
+            "recordsTotal" => $this->main_model->count_all_table_wfmValid(),
+            "recordsFiltered" => $this->main_model->count_filtered_table_wfmValid($searchValue, $orderColumn, $orderDir, $order),
+            "data" => $model,
+        );
+        echo json_encode($output);  
+    }
     
 
 

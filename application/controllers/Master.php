@@ -15,7 +15,7 @@ class Master extends MY_Controller
 
 
     function customer(){
-        $this->adminView('master/index');
+        $this->adminView('master/customer');
     }
 
 
