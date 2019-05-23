@@ -43,6 +43,11 @@
 					</div>
 
 					<div class="col-sm-7" style="margin-bottom: 15px;">
+            <div class="float-right">
+                <a href="<?= base_url() ?>bast/add" class="btn btn-sm btn-success btn-brand" >
+                  <i class="fa fa-plus"></i> <span> Submit &nbsp;&nbsp;&nbsp;&nbsp; </span>
+                </a>
+            </div>
 					</div>
 				
 					<div class="col-sm-12">
@@ -197,7 +202,7 @@
 
   }();
 
-  jQuery(document).ready(function() { 
+  $(document).ready(function() { 
       Page.init();
   });       
            

@@ -18,5 +18,13 @@ class User extends MY_Controller
         $this->adminView('user/profile',$data,'Profile');
     }
 
+    public function add(){
+        $this->adminView('user/add',null,'Add User');
+    }
+
+    public function add_proccess(){
+        echo json_encode($this->input->post());                  
+    }
+
 
 }

@@ -363,7 +363,7 @@ class M_Datatable extends CI_Model
 
 	## Datatable User
 	    var $table_user = 'PRIME_USERS';
-	    var $column_order_user = array('ID','NAME',null); //set column field database for datatable orderable
+	    var $column_order_user = array('NIK','NAME',null); //set column field database for datatable orderable
 	    var $column_search_user = array('UPPER(NAMA)'); //set column field database for datatable searchable
 	    var $order_user = array('NAMA' => 'asc'); // default order
 	    
@@ -509,18 +509,89 @@ class M_Datatable extends CI_Model
         }
     ## End of customer
 
+    # Datatable partner
+        var $table_partner= 'CBASE_DIVES';
+        var $column_order_partner= array('ID','NAME','EMAIL','STATUS',null,null); //set column field database for datatable orderable
+        var $column_search_partner= array(null); //set column field database for datatable searchable
+        var $order_partner= array('NAME' => 'asc'); // default order
+        
+        public function _get_all_query_partner(){
+                $data = $this->db
+                        ->select("KODE_PARTNER ID, NAMA_PARTNER NAME, EMAIL_PARTNER EMAIL, STATUS_ANPER STATUS")
+                        ->from("PRIME_PARTNER_TATA");
+                return $data;
+        }
+
+        private function _get_datatables_query_partner($searchValue, $orderColumn, $orderDir, $getOrder){
+
+            $this->_get_all_query_partner();
+
+            $i = 0;
+
+            foreach ($this->column_search_partner as $item) // loop column
+            {
+                if ($searchValue) // if datatable send POST for search
+                {
+
+                    if ($i === 0) // first loop
+                    {
+                        $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                        $this->db->like($item, $searchValue);
+                    } else {
+                        $this->db->or_like($item, $searchValue);
+                    }
+
+                    if (count($this->column_search_partner) - 1 == $i) //last loop
+                        $this->db->group_end(); //close bracket
+                }
+                $i++;
+            }
+
+            if(isset($getOrder)) // here order processing
+            {   
+                    
+                $this->db->order_by($this->column_order_partner[$orderColumn], $orderDir);
+            }
+            else if(isset($this->order_partner))
+            {
+                $order = $this->order_partner;
+                $this->db->order_by(key($order), $order[key($order)]);
+            }
+        }
+
+        function get_table_partner($length, $start, $searchValue, $orderColumn, $orderDir, $getOrder){
+            $this->_get_datatables_query_partner($searchValue, $orderColumn, $orderDir, $getOrder);
+            if ($length != -1)
+                $this->db->limit($length, $start);
+                $query = $this->db->get();
+                // echo $this->db->last_query();exit;
+            return $query->result();
+        }
+
+        function count_filtered_table_partner($searchValue, $orderColumn, $orderDir, $getOrder){
+            $this->_get_datatables_query_partner($searchValue, $orderColumn, $orderDir, $getOrder);
+            $query = $this->db->get();
+            return $query->num_rows();
+        }
+
+        public function count_all_table_partner(){
+            $this->_get_all_query_partner();
+            return $this->db->count_all_results();
+        }
+    ## End of partner
+
    	## Datatable wfmValid
         var $table_wfmValid = 'PRIME_NO_QUOTE_SO';
         var $column_order_wfmValid = array('DATE_UPDATED','NAME',null,null,null,null); //set column field database for datatable orderable
-        var $column_search_wfmValid = array('UPPER(STANDARD_NAME)','UPPER(AM)','UPPER(SEGMEN)','UPPER(NIPNAS)'); //set column field database for datatable searchable
+        var $column_search_wfmValid = array('UPPER(NO_P8)','UPPER(ID_LOP)'); //set column field database for datatable searchable
         var $order_wfmValid = array('NO_P8' => 'DESC'); // default order
         
         public function _get_all_query_wfmValid(){
                 $data = $this->db
-                        ->select("A.*,B.PROJECT_NAME")
+                        ->select("A.*, B.NAME")
                         ->from("PRIME_NO_QUOTE_SO A")
-                        ->join("PRIME_BAST_HGN B","B.NO_SPK = A.NO_P8","LEFT")
-                        ->where("A.ID_LOP is not null OR A.NO_P8 IS NOT NULL OR A.ID_ROW IS NOT NULL");
+                        ->join("PRIME_PROJECT B","B.ID_LOP_EPIC = A.ID_LOP","LEFT")
+                        ->where("A.NO_P8 IS NOT NULL OR A.ID_LOP IS NOT NULL");
                 return $data;
         }
 

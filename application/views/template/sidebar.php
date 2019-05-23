@@ -19,7 +19,7 @@
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="<?= base_url() ?>bast">
+              <a class="nav-link <?= $this->uri->segment(1)=="bast" ? 'active' : ''; ?>" href="<?= base_url() ?>bast">
                 <i class="nav-icon icon-docs"></i> BAST</a>
             </li>
 

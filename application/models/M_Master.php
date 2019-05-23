@@ -50,4 +50,55 @@ class M_Master extends CI_Model {
         return $query;
     }
 
+    function get_project_wfm($q = null){
+
+        if(empty($q)){
+             $query = $this->db
+                        ->select("M.NO_SPK NO_P8,  '['||M.NO_SPK||']'||' - '||M.PROJECT_NAME PROJECT_NAME")
+                        ->distinct()
+                        ->from('PRIME_SPK_NUMERO M')
+                        ->order_by("DATE_CREATED","DESC")
+                        ->limit(50)
+                        ->get()->result();  
+            return $query;  
+        }else{
+             $query = $this->db
+                        ->select("M.NO_SPK NO_P8,  '['||M.NO_SPK||']'||' - '||M.PROJECT_NAME PROJECT_NAME")
+                        ->distinct()
+                        ->from('PRIME_SPK_NUMERO M')
+                        ->like('UPPER(M.PROJECT_NAME)',strtoupper($q))
+                        ->or_like('UPPER(M.NO_SPK)',strtoupper($q))
+                        ->get()->result();  
+            return $query;  
+        }
+
+
+       
+    }
+
+
+    function get_p8($p8){
+        $query = $this->db
+                 ->select("A.*,  TO_CHAR(TANGGAL_BAST,'DD/MM/YYYY')  DATE_P8")
+                 ->from("PRIME_SPK_NUMERO A")
+                 ->where("NO_SPK",$p8)
+                 ->get()
+                 ->row_array();
+
+        return $query;
+    }
+
+    function get_all_p8($id_partner){
+        $query = $this->db
+                 ->select('*')
+                 ->from("PRIME_SPK_NUMERO")
+                 ->where("ID_MITRA",$id_partner)
+                 ->get()
+                 ->result_array();
+
+        return $query;
+    }
+
+    
+
 }

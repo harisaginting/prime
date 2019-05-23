@@ -83,7 +83,7 @@
                                             return edt+dlt;   
                                     }            
                                 },
-                               ],            
+                               ],             
                 });  
     };    
       return {
