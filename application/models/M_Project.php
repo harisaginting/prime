@@ -333,7 +333,7 @@ class M_Project extends CI_Model
 		$this->db->set('INSERTED_BY_NAME',  $this->session->userdata('nama_sess'));
 		$this->db->set('LAST_UPDATED_BY',  $this->session->userdata('nik_sess'));
 		$this->db->set('LAST_UPDATE', "to_date('".date('m/d/Y H:i:s')."','MM/DD/YYYY HH24:MI:SS')",false);
-		$query = $this->db->insert('_PROJECT_ACTION_PLAN');
+		$query = $this->db->insert('PRIME_PROJECT_ACTION_PLAN');
 
 		$idPro = $data['ID_PROJECT'];
 		if(!empty($dataPIC)){
@@ -486,5 +486,111 @@ class M_Project extends CI_Model
 	// Add Symptom
 	function addSymptom($data){
 		return $this->db->insert('PRIME_PROJECT_SYMPTOM',$data);
+	}
+
+
+
+	// Download
+	function download_active(){
+		$active 	= array('LEAD','LAG','DELAY');
+		$q 			= $this->db
+                        ->select("A.*, A.NAME PROJECT_NAME,  PARTNER.MITRA PARTNERS, A.STANDARD_NAME NAMACC, TO_CHAR(A.UPDATED_DATE, 'DD/MM/YYYY HH24:MI:SS') LAST_UPDATED,  A.UPDATED_BY_NAME UPDATED_BY, A.UPDATED_BY_ID ,CASE WHEN A.STATUS = 'DELAY' THEN '100' ELSE SUBSTR(PLAN.VAL,1,6) END PLAN,  SUBSTR(PLAN.VAL,1,6) PLAN_PM, SUBSTR(ACH.VAL,1,6) ACH, A.STATUS STATUS, TO_NUMBER(ACH.VAL) - TO_NUMBER(NVL(PLAN.VAL,0)) DEVIASI, A.REASON_OF_DELAY REASON, CASE WHEN A.STATUS = 'DELAY' THEN (((100 - TO_NUMBER(ACH.VAL)) / 100) * A.VALUE)  WHEN ACH.VAL > PLAN.VAL THEN ((100 - TO_NUMBER(ACH.VAL))/100) * A.VALUE ELSE (((TO_NUMBER(NVL(PLAN.VAL,0)) - TO_NUMBER(ACH.VAL)) /100) * A.VALUE) END POTENTIAL_WEEK, (((100 - TO_NUMBER(ACH.VAL)) / 100) * A.VALUE) POTENTIAL ")
+                        ->from('PRIME_PROJECT A')
+                        ->join("(SELECT ID_PROJECT, NVL(MAX(PLAN),0) VAL FROM PRIME_PROJECT_S_CURVE_WEEK GROUP BY ID_PROJECT) PLAN", "PLAN.ID_PROJECT = A.ID_PROJECT")
+						->join("(SELECT ID_PROJECT, NVL(MAX(REAL),0) VAL FROM PRIME_PROJECT_S_CURVE_WEEK GROUP BY ID_PROJECT) ACH", "ACH.ID_PROJECT = A.ID_PROJECT")
+                        ->join("(
+                        		SELECT ID_PROJECT,
+                                        LISTAGG(PARTNER_NAME, ', ') WITHIN GROUP (ORDER BY ID_PROJECT) AS MITRA
+                                        FROM PRIME_PROJECT_PARTNERS
+                                        GROUP BY ID_PROJECT
+                        		) PARTNER","PARTNER.ID_PROJECT = A.ID_PROJECT","LEFT")
+                        ->where_in('A.STATUS', $active) 
+                        ->where(1,1)
+                        ->where("A.EXIST","1");
+        $regional1 =	$this->session->userdata('regional');
+		if($regional1 != '0' && !empty($regional1)){
+			$q = $q->where('A.REGIONAL', $regional1);
+		}
+		$result = $q->distinct()->get()->result_array();		
+		
+		return $result;
+	}
+
+
+	function download_active_detail(){
+		$active 	= array('LEAD','LAG','DELAY');
+		$query 		= $this->db
+						->select("
+									TO_CHAR(A.UPDATED_DATE, 'DD/MM/YYYY HH24:MI:SS') LAST_UPDATED, 
+									A.ID_PROJECT ID_PROJECT, 
+									A.ID_LOP_EPIC ID_LOP, 
+									A.NAME NAME, 
+									A.TYPE, 
+									A.STANDARD_NAME CUSTOMER, 
+									A.SEGMEN,
+									A.AM_NAME AM, 
+									A.PM_NAME PM, 
+									A.SCALE,
+									A.VALUE,
+									A.NO_KB,
+									A.NO_KL,
+									A.STATUS,
+									PARTNER.PARTNERS, 
+									TO_CHAR(A.START_DATE,'MM/DD/YYYY') PROJECT_START,
+									TO_CHAR(A.END_DATE,'MM/DD/YYYY') PROJECT_END,
+									A.END_DATE END, 
+									NVL(FLOOR(A.END_DATE-A.START_DATE),0)||' days' PLAN_DURATION, 
+									NVL(FLOOR(SYSDATE-A.START_DATE),0)||' days' DURATION, 
+									NVL(PLAN.VAL,0) PLAN,
+									NVL(ACH.VAL,0) ACH, 
+									NVL((ACH.VAL - PLAN.VAL),0) DEVIATION,  
+									A.STATUS PROGRESS, 
+									B.NAME DELIVERABLE_NAME,
+									B.WEIGHT DELIVERABLE_WEIGHT,
+									B.PROGRESS_VALUE DELIVERABLE_ACH,
+									TO_CHAR(B.START_DATE,'MM/DD/YYYY') DELIVERABLE_START,
+									TO_CHAR(B.END_DATE,'MM/DD/YYYY') DELIVERABLE_END,
+									CASE WHEN SYM.SYM_DATE IS NOT NULL THEN '['||TO_CHAR(SYM.SYM_DATE,'MM/DD/YYYY')||'] '||A.REASON_OF_DELAY
+										ELSE  A.REASON_OF_DELAY END
+										SYMPTOM, 
+									ISSUE.ISSUE_NAME ISSUE_NAME, 
+									ISSUE.IN_CHARGE ISSUE_IN_CHARGE,
+									ISSUE.CATEGORY ISSUE_CATEGORY,
+									ISSUE.RISK_IMPACT ISSUE_RISK_IMPACT, 
+									ISSUE.IMPACT ISSUE_IMPACT,
+									ACTION.ACTION_NAME ACTION_NAME, 
+									ACTION.ACTION_REMARKS ACTION_REMARKS, 
+									ACTION.DUE_DATE ACTION_DUE_DATE,
+									ACTION_PIC.PIC_NAME||' ['||ACTION_PIC.PIC_EMAIL||']' ACTION_PIC,
+									CASE WHEN A.STATUS = 'DELAY' THEN (((100 - TO_NUMBER(ACH.VAL)) / 100) * A.VALUE) 
+										 WHEN ACH.VAL > PLAN.VAL THEN ((100 - TO_NUMBER(ACH.VAL))/100) * A.VALUE 
+										 ELSE (((TO_NUMBER(NVL(PLAN.VAL,0)) - TO_NUMBER(ACH.VAL)) /100) * A.VALUE) 
+										 END POTENTIAL_WEEK, 
+									(((100 - TO_NUMBER(ACH.VAL)) / 100) * A.VALUE) POTENTIAL
+									")
+						->from("PRIME_PROJECT A")
+						->join("(SELECT * FROM PRIME_PROJECT_DELIVERABLES WHERE ((WEIGHT > PROGRESS_VALUE) OR (PROGRESS_VALUE IS NULL)) ) B", "A.ID_PROJECT = B.ID_PROJECT")
+						->join("(SELECT * FROM PRIME_PROJECT_ISSUE WHERE STATUS_ISSUE = 'OPEN') ISSUE", "ISSUE.ID_DELIVERABLE = B.ID_DELIVERABLE","LEFT")
+						->join("(SELECT * FROM PRIME_PROJECT_ACTION_PLAN) ACTION","ISSUE.ID_ISSUE = ACTION.ID_ISSUE","LEFT")
+						->join("PRIME_ACTION_PLAN_PIC ACTION_PIC","ACTION_PIC.ID_ACTION_PLAN = ACTION.ID_ACTION_PLAN","LEFT")
+						->join("(SELECT ID_PROJECT, NVL(MAX(PLAN),0) VAL FROM PRIME_PROJECT_S_CURVE_WEEK GROUP BY ID_PROJECT) PLAN", "PLAN.ID_PROJECT = A.ID_PROJECT","LEFT")
+						->join("(SELECT ID_PROJECT, NVL(MAX(REAL),0) VAL FROM PRIME_PROJECT_S_CURVE_WEEK GROUP BY ID_PROJECT) ACH", "ACH.ID_PROJECT = A.ID_PROJECT","LEFT")
+						->join("(SELECT MAX(DATE_CREATED) SYM_DATE, ID_PROJECT FROM PRIME_PROJECT_SYMPTOM GROUP BY ID_PROJECT) SYM", "SYM.ID_PROJECT = A.ID_PROJECT","LEFT")
+						 ->join("(
+                        		SELECT ID_PROJECT,
+                                        LISTAGG(PARTNER_NAME, ', ') WITHIN GROUP (ORDER BY ID_PROJECT) AS PARTNERS
+                                        FROM PRIME_PROJECT_PARTNERS
+                                        GROUP BY ID_PROJECT
+                        		) PARTNER","PARTNER.ID_PROJECT = A.ID_PROJECT","LEFT")
+						->where("A.EXIST",1)
+						->where_in("A.STATUS",$active);
+
+		$regional1 =	$this->session->userdata('regional');
+		if($regional1 != '0' && !empty($regional1)){
+			$q = $query->where('A.REGIONAL', $regional1);
+		}
+		$result = $query->order_by("A.ID_PROJECT")->distinct()->get()->result_array();	
+
+		return $result;
 	}
 }

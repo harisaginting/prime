@@ -89,7 +89,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <a class="navbar-brand" href="#">
-        <img class="navbar-brand-full" src="<?= base_url(); ?>assets/img/logo.png" width="110" height="40" alt="CoreUI Logo">
+        <img class="navbar-brand-full" src="<?= base_url(); ?>assets/img/logo.png" width="130" height="40" alt="CoreUI Logo">
         <img class="navbar-brand-minimized" src="<?= base_url(); ?>assets/img/logo_sdv.png" width="50" height="30" alt="CoreUI Logo">
       </a>
       <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">

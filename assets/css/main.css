@@ -29,6 +29,7 @@ main{
 
 .sidebar{
 	background :#960707c2;
+	background-image: url(../img/diysidebar.png);
 }
 
 .sidebar .nav-link{
@@ -127,6 +128,8 @@ table{
 
 .sidebar .sidebar-minimizer{
 	background: rgb(160, 51, 51);
+	background-image: url(../img/diysidebar2.png);
+
 }
 
 thead{
@@ -142,7 +145,7 @@ thead{
 
 @media (min-width: 992px){
 	.sidebar-minimized .sidebar .sidebar-minimizer{
-		background: rgb(160, 51, 51);
+		background-image: url(../img/diysidebar2.png);
 	}
 
 	.sidebar-minimized .sidebar .nav > .nav-dropdown > .nav-dropdown-items{
@@ -169,7 +172,7 @@ thead{
 }
 
 .nav-title{
-	background: #900101;
+	background: #90010130;
 	color: #d4d4d4;
 	padding: 5px 20px !important;
 	font-size: 9px;

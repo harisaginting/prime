@@ -59,7 +59,7 @@ input[type="checkbox"]:checked + label:before {
 				<h6><?= $NAMA_MITRA?></h6>
 			</div>
 			<div class="card-body">
-				<form method="post" action="<?= base_url() ?>add_proccess" enctype="multipart/form-data">
+				<form id="form_bast" method="post" action="<?= base_url() ?>add_proccess" enctype="multipart/form-data">
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
@@ -89,7 +89,7 @@ input[type="checkbox"]:checked + label:before {
 
 							<div class="form-group">
 								<label class="mini-label">Project Name</label>
-								<textarea type="text" name="project" id="project" rows="4" class="form-control"></textarea>
+								<textarea type="text" name="project" id="project" rows="4" class="form-control"><?= $PROJECT_NAME ?></textarea>
 							</div>
 							
 							<div class="form-group">
@@ -157,7 +157,7 @@ input[type="checkbox"]:checked + label:before {
 					                </div>
 					            </div>
 
-					          <div id="c_reccuring_val container_top" class="form-group">
+					          <div id="c_reccuring_val" class="form-group container_top">
 					            <label class="control-label">Reccuring Value (Rp.)</label>
 					                <input type="text" class="form-control rupiah" id="reccuring_val" name="reccuring_val" placeholder="Reccuring value">
 					            </div>
@@ -222,15 +222,14 @@ input[type="checkbox"]:checked + label:before {
 				               </div>
 				           </div> 
 
-				           <div class="form-group">
-				           	<label class="mini-label">Email Person In Charge</label>
-				           		<select style="width: 100%;" name="email_pic" id="email_pic" class="form-control" required>
-				                	<option></option>
-				            	</select>
-				           </div>
+				           <div class="form-group" id="c_pic_email">
+				            <label class="mini-label">Email Person In Charge</label>
+				             <select type="text" class="form-control" id="pic_email" name="pic_email" placeholder="Email Person In Charge"></select>
+				             <input type="hidden" class="form-control" id="pic_email2" name="pic_email2">
+				          </div>
 
-				           <div class="form-group hidden" id="c_pic_partner">
-				            <label for="name">Person In Charge</label>
+				          <div class="form-group hidden" id="c_pic">
+				            <label class="mini-label">PIC Partner / Subsidiary *</label>
 				             <input type="text" class="form-control" id="pic" name="pic" placeholder="Person In Charge">
 				          </div>
 
@@ -275,7 +274,8 @@ var Page = function (){
                   $("#c_reccuring_val").removeClass('hidden');  
                   break;
            } 
-        }; 
+        };
+
 
 return{
 		init : function (){
@@ -285,7 +285,7 @@ return{
                     top_bast($(this).val());
               });
 
-			$("#email_pic").select2({
+			$("#pic_email").select2({
                 placeholder: "select email PIC",
                 width: 'resolve',
                 allowClear:true,
@@ -313,15 +313,16 @@ return{
             });
 
 
-            $(document).on('change','#email_pic',function(e){
-                  var eMval = $('#email_pic').val();
+            $(document).on('change','#pic_email',function(e){
+                  var eMval = $('#pic_email').val();
                   var eMitra = eMval.split("||");
+                  console.log(eMitra);
                   if(eMitra.length<=1){
-                      $('#c_email_pic').removeClass('hidden');
-                      $('#email_pic2').val(eMval);
+                      $('#c_pic').removeClass('hidden');
+                      $('#pic_email2').val(eMval);
                   }else{
                       $('#c_pic').addClass('hidden');
-                      $('#email_pic2').val(eMitra[1]);
+                      $('#pic_email2').val(eMitra[1]);
                       $('#pic').val(eMitra[0]);
                     }
               });
@@ -333,6 +334,98 @@ return{
                       $('#val_other').addClass('hidden');
                 }  
               }); 
+
+
+
+              $(document).on('click','#btn_submit',function(e){
+                    e.stopImmediatePropagation();
+                      var evidence = [];
+                      if ($('#BAcustomer').is(':checked')) {evidence.push($('#BAcustomer').data('val'))}else{evidence.push(' ');}
+                      if ($('#BAperformansi').is(':checked')) {evidence.push($('#BAperformansi').data('val'))}else{evidence.push(' ');}
+                      if ($('#BArekonsiliasi').is(':checked')) {evidence.push($('#BArekonsiliasi').data('val'))}else{evidence.push(' ');}
+                      if ($('#BAprogress').is(':checked')) {evidence.push($('#BAprogress').data('val'))}else{evidence.push(' ');}
+                      if ($('#BAketerlambatan').is(':checked')) {evidence.push($('#BAketerlambatan').data('val'))}else{evidence.push(' ');}   
+                      if ($('#cSPK').is(':checked')) {evidence.push($('#cSPK').data('val'))}else{evidence.push(' ');}    
+                      if ($('#cWO').is(':checked')) {evidence.push($('#cWO').data('val'))}else{evidence.push(' ');}    
+                      if ($('#cKL').is(':checked')) {evidence.push($('#cKL').data('val'))}else{evidence.push(' ');}       
+                     /*8*/ evidence.push($('#termin').val());    
+                      if ($('#Baut').is(':checked')) {evidence.push($('#Baut').data('val'))}else{evidence.push(' ');} 
+                      if ($('#cP71').is(':checked')) {evidence.push($('#cP71').data('val'))}else{evidence.push(' ');}   
+                      if ($('#cSP').is(':checked')) {evidence.push($('#cSP').data('val'))}else{evidence.push(' ');}  
+                      if ($('#BAprogress2').is(':checked')) {evidence.push($('#BAprogress2').data('val'))}else{evidence.push(' ');}  
+                      if ($('#OtherE').is(':checked')) {evidence.push($('#val_other').val())}else{evidence.push(' ');}  
+                      $('#evidence_field').val(evidence);
+                      if($('#form_bast').valid()){
+                          bootbox.prompt({
+                                  title: "Confirm Data",
+                                  placeholder: "Write some note?",
+                                  inputType: 'textarea',
+                                  buttons: {
+                                      confirm: {
+                                          label: '<i class="fa fa-check"></i><span> Submit </span>',
+                                          className: 'btn-success'
+                                      },
+                                      cancel: {
+                                          label: '<i class="fa fa-times"></i><span> Cancel </span>',
+                                          className: 'btn-danger col-sm-offset-4'
+                                      }
+                                  },
+                                  callback: function(result) {
+                                    console.log(result);
+                                      if(result!=null){
+                                        $('#commend').val(result);
+                                        $('#pre-load-background').fadeIn();
+                                        $('.rupiah').unmask();
+                                        $('#value').val($('#value').unmask());
+                                        $('#bast_value').val($('#bast_value').unmask());
+                                        $('#reccuring_val').val($('#reccuring_val').unmask());
+
+                                        var form = $('form')[0];
+                                        var formData = new FormData(form);
+                                        $.ajax({
+                                                      url: base_url+'bast/submitBast',
+                                                      type:'POST',
+                                                      dataType : "json",
+                                                      data:  formData ,
+                                                      async : true, 
+                                                      processData: false,
+                                                      contentType: false,
+                                                      processData:false,
+                                                      success:function(result){
+                                                        if(result.data=='success'){
+                                                        bootbox.alert("Success!", function(){ 
+                                                        var url = base_url+"bast/view/"+result.id_bast;
+                                                        window.location.href = url;
+                                                        
+                                                        console.log('success Add BAST!'); 
+                                                        });
+                                                        }else{
+                                                        bootbox.alert("Failed!", function(){ 
+                                                        console.log('failed Add BAST!'); });
+                                                        }
+                                                      return result;
+                                                      },
+                                                       error: function(xhr, error){
+                                                              bootbox.alert("Failed!", function(){ 
+                                                              console.log('failed update BAST!'); });
+                                                       },
+
+                                              });
+                                        $('#pre-load-background').fadeOut();
+                                      }
+                                      else{
+                                          bootbox.hideAll();
+                                      }
+                                  }
+                              }); 
+                            
+                      }else{
+                      	console.log('something wrong');
+                      }
+
+                       
+
+              });
 		}
 	}
 }()

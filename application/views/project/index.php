@@ -62,12 +62,12 @@
 		<div class="card">
 			<div class="card-body">
 				<div class="row">
-					<div class="col-sm-5">
+					<div class="col-sm-4">
 						<h4 class="card-title mb-0">List Projects</h4>
 						<div class="small text-muted">Service Delivery</div>
 					</div>
 
-					<div class="col-sm-7" style="margin-bottom: 15px;">
+					<div class="col-sm-8" style="margin-bottom: 15px;">
 						<div class="btn-group btn-group-toggle float-right">
 							<a class="selectTable btn btn-outline-secondary <?= ($type=='active') || (empty($type)) ? 'active' :''; ?>" data-id="active" href="<?= base_url(); ?>project/data/active">
 							 Active
@@ -82,6 +82,8 @@
 							 Candidate
 							</a>
 						</div>
+
+
 					</div>
 				
 					<div class="col-sm-12" id="table_content">

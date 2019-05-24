@@ -70,7 +70,7 @@
                                   				let am = obj.AM.split(',');
                                   				v = "";
 	                                            am.forEach(function(entry) {
-                    												    v = v+"<i class='fa fa-user-circle'></i> <small>"+entry + "</small><br>"; 
+                    												    v = v+"<i class='fa fa-user-circle'></i> <span style='font-size=10px;'>"+entry + "</span><br>"; 
                     												    });
                                             }
                                             return v;   

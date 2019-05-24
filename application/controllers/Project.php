@@ -4,7 +4,7 @@ class Project extends MY_Controller
 {
    
     public function __construct()
-    {
+    { 
         parent::__construct();
         $this->load->model('M_Project','main_model'); 
     }
@@ -33,11 +33,12 @@ class Project extends MY_Controller
              redirect(base_url().'project/data');
         }
        
-
+        $data['list_segmen']        = $this->get_segmen();
+        $data['list_type']          = $this->get_project_type();
         $data['id_project']         = $id_project;
         $data['project']            = $project      = $this->main_model->get_project($id_project);
-        $data['edit']               = ($this->session->userdata('nik_sess') == $project['PM_NIK'])||($this->get_access_value('MASTER')>0 && (($data['project'] == 'LEAD') || ($data['project'] == 'LAG') || ($data['project'] == 'DELAY'))) ? 1 : 0;
-        $data['edit'] = 0;
+        $data['edit']               = ($this->session->userdata('nik_sess') == $project['PM_NIK'])||($this->get_access_value('MASTER')>0 && (($data['project'] == 'LEAD') || ($data['project'] == 'LAG') || ($data['project'] == 'DELAY'))) ? 1 : 1;
+        //$data['edit'] = 0;
         $data['current_week']       = $current_week     = $this->main_model->get_project_current_week($id_project); 
         $data['current_plan']       = $this->main_model->get_project_current_plan($id_project, $current_week); 
         $data['progress']           = $this->main_model->get_project_progress($id_project);  
@@ -548,6 +549,125 @@ class Project extends MY_Controller
         echo json_encode($result);
 
         //echo $id_project.'<br>'.json_encode($key).'<br>'.json_encode($value);
+    }
+
+
+    function download_active(){
+        $this->load->library('Hgn_spreadsheet');
+        $data = $this->main_model->download_active();
+
+        $name = 'Projects Active-'.date('Y-m-d');
+
+        $this->hgn_spreadsheet->setHeader(
+            array(
+                'title' => $name
+                ,'subject' => $name
+                ,'description' => $name
+                ,'sheet_name' => $name
+            )
+        );
+
+        $data_title = array( 
+             array('name' => 'ID PROJECT', 'id' => 'ID_PROJECT', 'width' => 10)
+            ,array('name' => 'ID LOP', 'id'     => 'ID_LOP_EPIC', 'width' => 10)
+            ,array('name' => 'SCALE', 'id'   => 'SCALE', 'width' => 10)
+            ,array('name' => 'NAME', 'id'       => 'PROJECT_NAME', 'width' => 60)
+            ,array('name' => 'TYPE', 'id'       => 'TYPE', 'width' => 20)
+            ,array('name' => 'START DATE', 'id' => 'START_DATE', 'width' => 15)
+            ,array('name' => 'END DATE', 'id'   => 'END_DATE', 'width' => 15)
+            ,array('name' => 'CUSTOMER', 'id'   => 'NAMACC', 'width' => 35)
+            ,array('name' => 'SEGMEN', 'id'     => 'SEGMEN', 'width' => 10)
+            ,array('name' => 'PARTNER', 'id'    => 'PARTNERS', 'width' => 30)
+            ,array('name' => 'STATUS', 'id'     => 'STATUS', 'width' => 20)
+            ,array('name' => 'PLAN (This Week)', 'id' => 'PLAN', 'width' => 20)
+            ,array('name' => 'ACHIEVEMENT', 'id' => 'ACH', 'width' => 10)
+            ,array('name' => 'DEVIASI', 'id'    => 'DEVIASI', 'width' => 10)
+            ,array('name' => 'VALUE', 'id'      => 'VALUE', 'width' => 20 ,'type' => 'number')
+            ,array('name' => 'POTENTIAL SCALING THIS WEEK', 'id' => 'POTENTIAL_WEEK', 'width' => 30)
+            ,array('name' => 'POTENTIAL SCALING', 'id' => 'POTENTIAL', 'width' => 20)
+            ,array('name' => 'PM NAME', 'id'    => 'PM_NAME', 'width' => 30)
+            ,array('name' => 'AM NAME', 'id'    => 'AM_NAME', 'width' => 30)
+            ,array('name' => 'NOMOR KB', 'id'   => 'NO_KB', 'width' => 10)
+            ,array('name' => 'NOMOR KL', 'id'   => 'NO_KL', 'width' => 10)
+            ,array('name' => 'REASON OF DELAY', 'id' => 'REASON', 'width' => 50)
+            ,array('name' => 'LAST UPDATE', 'id' => 'LAST_UPDATED', 'width' => 30)
+            );
+        $this->hgn_spreadsheet->setDataTitle($data_title);
+        $file = $this->hgn_spreadsheet->create($name, $data);
+
+        $this->load->helper('download');
+        force_download($file, NULL);
+
+    }
+
+    function download_active_detail(){
+        $this->load->library('Hgn_spreadsheet');
+        $data = $this->main_model->download_active_detail();
+
+        // foreach ($data[0] as $key => $value) {
+        //     echo $key." = ".$value."<br>";
+        // }
+        // die;
+
+
+        $name = 'Projects Active Det -'.date('Y-m-d');
+
+        $this->hgn_spreadsheet->setHeader(
+            array(
+                'title' => $name
+                ,'subject' => $name
+                ,'description' => $name
+                ,'sheet_name' => $name
+            )
+        );
+
+        $data_title = array( 
+             array('name' => 'ID PROJECT', 'id' => 'ID_PROJECT', 'width' => 10)
+            ,array('name' => 'ID LOP', 'id'     => 'ID_LOP', 'width' => 10)
+            ,array('name' => 'SCALE', 'id'      => 'SCALE', 'width' => 10)
+            ,array('name' => 'NAME', 'id'       => 'NAME', 'width' => 60)
+            ,array('name' => 'TYPE', 'id'       => 'TYPE', 'width' => 20)
+            ,array('name' => 'VALUE', 'id'      => 'VALUE', 'width' => 20 ,'type' => 'number')           
+            ,array('name' => 'CUSTOMER', 'id'   => 'CUSTOMER', 'width' => 35)
+            ,array('name' => 'SEGMEN', 'id'     => 'SEGMEN', 'width' => 10)
+            ,array('name' => 'AM', 'id'         => 'AM', 'width' => 30)
+            ,array('name' => 'PM', 'id'         => 'PM', 'width' => 20)
+            ,array('name' => 'PARTNERS', 'id'   => 'PARTNERS', 'width' => 20)
+            ,array('name' => 'NOMOR KB', 'id'   => 'NO_KB', 'width' => 10)
+            ,array('name' => 'NOMOR KL', 'id'   => 'NO_KL', 'width' => 10)
+            ,array('name' => 'START', 'id'      => 'PROJECT_START', 'width' => 15)
+            ,array('name' => 'END', 'id'        => 'PROJECT_END', 'width' => 15)
+            ,array('name' => 'PLAN DURATION', 'id'          => 'PLAN_DURATION', 'width' => 15)
+            ,array('name' => 'DURATION', 'id'   => 'DURATION', 'width' => 15)
+            ,array('name' => 'PLAN(%)', 'id'    => 'PLAN', 'width' => 10)
+            ,array('name' => 'ACHIEVEMENT(%)', 'id'         => 'ACH', 'width' => 10)   
+            ,array('name' => 'PROGRESS STATUS','id'         => 'STATUS', 'width' => 10)   
+            ,array('name' => 'SYMPTOM', 'id'    => 'SYMPTOM', 'width' => 50)
+            ,array('name' => 'POTENTIAL SCALING THIS WEEK', 'id' => 'POTENTIAL_WEEK', 'width' => 30)
+            ,array('name' => 'POTENTIAL SCALING REMAINING', 'id'           => 'POTENTIAL', 'width' => 20)
+            ,array('name' => 'DELIVERABLE', 'id' => 'DELIVERABLE_NAME', 'width' => 20)
+            ,array('name' => 'DELIVERABLE WEIGHT', 'id'          => 'DELIVERABLE_WEIGHT', 'width' => 20)
+            ,array('name' => 'DELIVERABLE ACHIEVEMENT', 'id'     => 'DELIVERABLE_ACH', 'width' => 20)
+            ,array('name' => 'DELIVERABLE START', 'id'           => 'DELIVERABLE_START', 'width' => 20)
+            ,array('name' => 'DELIVERABLE END', 'id'             => 'DELIVERABLE_END', 'width' => 20)
+            ,array('name' => 'ISSUE', 'id'                       => 'ISSUE_NAME', 'width' => 20)
+            ,array('name' => 'ISSUE CATEGORY', 'id'              => 'ISSUE_CATEGORY', 'width' => 20)
+            ,array('name' => 'ISSUE RISK IMPACT', 'id'           => 'ISSUE_RISK_IMPACT', 'width' => 20)
+            ,array('name' => 'ISSUE IMPACT', 'id'                => 'ISSUE_IMPACT', 'width' => 20)
+            ,array('name' => 'ISSUE IN CHARGE', 'id'             => 'ISSUE_IN_CHARGE', 'width' => 20)
+            ,array('name' => 'ACTION PLAN', 'id'                 => 'ACTION_NAME', 'width' => 20)
+            ,array('name' => 'ACTION PLAN REMARKS', 'id'         => 'ACTION_REMARKS', 'width' => 20)
+            ,array('name' => 'ACTION PLAN DUE DATE', 'id'        => 'ACTION_DUE_DATE', 'width' => 20)
+            ,array('name' => 'ACTION PLAN PIC', 'id'             => 'ACTION_PIC', 'width' => 20)
+            ,array('name' => 'LAST UPDATE', 'id' => 'LAST_UPDATED', 'width' => 30)
+            );
+
+        $this->hgn_spreadsheet->setDataTitle($data_title);    
+        $file = $this->hgn_spreadsheet->create($name, $data);
+
+        $this->load->helper('download');
+        force_download($file, NULL);
+
     }
 
 }

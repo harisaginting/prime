@@ -62,4 +62,50 @@ class Wfm extends MY_Controller
     	return $this->main_model->delete_so($no_p8,$no_so);
     }
 
+
+
+    // UPLOAD
+    function upload(){
+        $this->adminView('wfm/upload',null,'WFM Upload');
+    }
+
+    function upload_proccess(){
+        $upload_path = "assets/excel/";
+        if(!is_dir($upload_path)){
+            mkdir($upload_path,0777,true);
+        }
+        $files      = $_FILES['validation_wfm'];
+        $filename   = 'wfm validate '.date('Ymd-hi');
+
+        $this->load->library('upload');
+        $config['upload_path']   = $upload_path;
+        $config['allowed_types'] = 'xls|xlsx';
+        $config['max_size']      = 1000000;
+        $config['file_name']     = $filename;
+        $config['remove_spaces'] = FALSE;
+
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('validation_wfm'))
+        {
+            // case - failure
+            $upload_error = array('error' => $this->upload->display_errors());
+            echo json_encode($upload_error);die();
+        }
+        else
+        {
+            // case - success
+            $upload_data = $this->upload->data();
+            //echo json_encode($upload_data);
+            $helper->log('Loading file ' . pathinfo($inputFileName, PATHINFO_BASENAME) . ' using IOFactory to identify the format');
+                $spreadsheet = IOFactory::load($upload_path.'assets/excel/');
+                $sheetData = $spreadsheet
+            //use PhpOffice\PhpSpreadsheet\IOFactory;
+            //return $upload_data;
+        
+        }
+
+
+
+
+    }
 }

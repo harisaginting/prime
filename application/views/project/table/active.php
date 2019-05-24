@@ -1,12 +1,18 @@
 
 <div class="row">
- <div class="col-md-2">
- 	
+ <div class="col-md-12">
+   <div class="float-right" style="margin-bottom: 10px;">
+        <a class="btn btn-primary btn-xm btn-brand" href="<?= base_url(); ?>project/download_active">
+          <i class="fa fa-download"></i>
+          <span>General &nbsp;</span>
+        </a>
+
+        <a class="btn btn-primary btn-xm btn-brand" href="<?= base_url(); ?>project/download_active_detail">
+          <i class="fa fa-download"></i>
+          <span>Detail &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </a>
+    </div>
  </div>
-
-
-
-
 </div>
 
 <table id="dataActive" class="table table-responsive-sm table-bordered" style="width: 100%;margin-top: 10px;">

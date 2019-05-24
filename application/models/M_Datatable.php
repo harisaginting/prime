@@ -434,7 +434,7 @@ class M_Datatable extends CI_Model
 
 	## Datatable customer
         var $table_customer = 'CBASE_DIVES';
-        var $column_order_customer = array('NIPNAS','NAME',null,null,null,null); //set column field database for datatable orderable
+        var $column_order_customer = array('NIP_NAS','STANDARD_NAME','SEGMEN','AM',null,null); //set column field database for datatable orderable
         var $column_search_customer = array('UPPER(STANDARD_NAME)','UPPER(AM)','UPPER(SEGMEN)','UPPER(NIPNAS)'); //set column field database for datatable searchable
         var $order_customer = array('NAME' => 'asc'); // default order
         
@@ -511,8 +511,8 @@ class M_Datatable extends CI_Model
 
     # Datatable partner
         var $table_partner= 'CBASE_DIVES';
-        var $column_order_partner= array('ID','NAME','EMAIL','STATUS',null,null); //set column field database for datatable orderable
-        var $column_search_partner= array(null); //set column field database for datatable searchable
+        var $column_order_partner= array('KODE_PARTNER','NAMA_PARTNER','EMAIL_PARTNER','STATUS_ANPER',null,null); //set column field database for datatable orderable
+        var $column_search_partner= array('NAMA_PARTNER','EMAIL_PARTNER','KODE_PARTNER'); //set column field database for datatable searchable
         var $order_partner= array('NAME' => 'asc'); // default order
         
         public function _get_all_query_partner(){

@@ -949,7 +949,7 @@
 		                                <label class="form-control-label" >Achievement (%)</label>
 		                            </div>
 		                            <div class="col-md-8">
-		                                <input type="number" class="form-control deliverable_field " name="deliverable_achievement" placeholder="achievement deliverable" id="deliverable_achievement">
+		                                <input type="number" class="form-control deliverable_field " name="deliverable_achievement" placeholder="achievement deliverable" id="deliverable_achievement" max="100">
 		                            </div>
 		                        </div>
 		                        
@@ -1167,7 +1167,7 @@
 
 <script>
  var id_project 	= "<?= $id_project; ?>";
- var total_weight 	= "<?= !empty($total_weight) ? $total_weight : 0; ?>";
+ var total_weight 	= <?= !empty($progress->WEIGHT) ? floatval($progress->WEIGHT) : 0; ?>;
  var field_edit 	= null;
  var Page = function () {
 
@@ -1529,11 +1529,12 @@
 	                            $("#deliverable_start_date").datepicker('setDate', new Date(data['START_DATE']));
 	                            $("#deliverable_end_date").datepicker('setDate',new Date(data['END_DATE']));
 	                            $("#deliverable_weight").val(Number(data['WEIGHT']));
-	                            $("#deliverable_achievement").val(Number(data['ACHIEVEMENT']))
+	                            $("#deliverable_achievement").val(Number(data['ACHIEVEMENT']));
 	                            $("#deliverable_description").val(data['DESCRIPTION']);
 	                            
-	                            $("#deliverable_weight").attr('max',(100 - Number(total_weight)) + Number(data['WEIGHT']) );
-	                            $("#devWeigVal").text((100 - Number(total_weight)) + Number(data['WEIGHT']) );
+	                            $("#deliverable_weight").attr('max',(100 - Number(total_weight)));
+	                            $("#deliverable_achievement").attr('max',(Number(data['WEIGHT'])));
+	                            $("#devWeigVal").text((100 - Number(total_weight)) );
 
 	                        }
 	                    })

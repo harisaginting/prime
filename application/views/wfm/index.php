@@ -38,6 +38,15 @@
 
 
   <div class="col-sm-7">
+          <div class="row" style="margin-bottom: 10px;">
+            <div class="col-md-12">
+              <a href="<?= base_url() ?>wfm/upload" class="btn btn-md btn-primary btn-brand pull-right">
+                <i class="fa fa-plus"></i>
+                <span> Upload Validation Data </span>
+              </a>
+            </div>
+          </div>
+
             <div class="card">
               <div class="card-body">
                 <div class="form-group">
