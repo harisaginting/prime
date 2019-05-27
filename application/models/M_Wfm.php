@@ -15,8 +15,22 @@ class M_Wfm extends CI_Model {
 					->select('count(1) T')
 					->from('PRIME_NO_QUOTE_SO')
 					->where('NO_SO',$no_so)
-					->where('NO_P8',$no_p8)
+					->where('NO_P8', $no_p8)
 					->where('EXIST',1)
+					->get()->row()->T;
+		
+		if(empty($query)){
+			return 0;
+		}
+		return $query;
+	
+	}
+
+	function check_p8($no_p8){
+		$query = $this->db
+					->select('count(1) T')
+					->from('PRIME_SPK_NUMERO')
+					->where('NO_SPK', $no_p8)
 					->get()->row()->T;
 		
 		if(empty($query)){

@@ -11,7 +11,7 @@
 				<div class="col-sm-12" style="margin-top: 10px; margin-bottom: 15px;font-size: 14px;">
 					<div class="row text-center">
 						<div class="col-sm-12 col-md mb-sm-2 mb-0">
-							<div class="clearfix">
+							<div class="clearfix"> 
 							<div class="float-left">
 								<strong><?= !empty($progress->ACHIEVEMENT) ? floatval($progress->ACHIEVEMENT) : 0; ?>%</strong>
 							</div>
@@ -37,6 +37,57 @@
 								<div class="progress-bar bg-info" role="progressbar" style="width: <?= !empty($progress->WEIGHT) ? floatval($progress->WEIGHT) : 0; ?>%" aria-valuenow="<?= !empty($progress->WEIGHT) ? floatval($progress->WEIGHT) : 0; ?>" aria-valuemin="0" aria-valuemax="100"></div>
 							</div>
 						</div>
+					</div>
+				</div>
+
+				<div class="col-md-12">
+			  		<div class="row">
+				  		<div class="col-md-4">
+				  			<h6>Remarks</h6>
+				  		</div>
+				  		<div class="col-md-8 text-right">
+				  			<button class=" btn btn-sm btn-primary btn-brand btn_edit_project" data-field="REMARKS"><i class="fa fa-plus"></i>
+								<span>Add Project Overview Remarks</span>
+				  			</button>
+				  		</div>
+				  	</div>
+			  	</div>
+
+				<div class="col-sm-12">
+					<div class="container py-2 mt-4 mb-4">
+					  <!-- timeline item 1 -->
+					  <?php foreach ($remarks as $key => $value) : ?>
+					  	<div class="row">   
+							<!-- timeline item 1 left dot -->
+							    <div class="col-auto text-center flex-column d-none d-sm-flex"	>
+							      <div class="row h-50">
+							        <div class="col">&nbsp;</div>
+							        <div class="col">&nbsp;</div>
+							      </div>
+							      <h5 class="m-2">
+							        <span class="badge badge-pill bg-light border">&nbsp;</span>
+							      </h5>
+							      <div class="row h-50">
+							        <div class="col border-right">&nbsp;</div>
+							        <div class="col">&nbsp;</div>
+							      </div>
+							    </div>
+							    <!-- timeline item 1 event content -->
+							    <div class="col py-2">
+							      <div class="card" style="min-height: 100px;">
+							        <div class="card-body">
+								          <div class="float-right text-muted"><?= $value['DATE_C'] ?><span class="tex-muted">
+								          	<br><span class="text-black"><?=$value['CREATED_BY']?></span>
+								          </span>
+							          </div>
+							          <p class="card-text"><?= $value['REMARKS'] ?></p>
+							        </div>
+							      </div>
+							    </div>
+						
+					  	</div>
+					  <?php endforeach;?>
+					  <!--/row-->
 					</div>
 				</div>
 
@@ -526,7 +577,7 @@
 		                            </div>
 		                        </div>
 
-		                        <div class="form-group row hidden" id="adendum_note">
+		                        <div class="form-group row hidden edit_project_form" id="adendum_note">
 		                            <div class="col-md-4">
 		                                <label class="form-control-label" >Note <span class="title_edit_project"></span></label>
 		                            </div>
@@ -535,8 +586,19 @@
 		                            </div>
 		                        </div>
 
+		                        <div class="form-group row hidden edit_project_form" id="c_project_remarks">
+		                            <div class="col-md-12">
+		                            	<textarea class="form-control e	dit_project_form" required name="project_remarks" id="project_remarks" rows="5" placeholder="Add Progress Remarks for this project (<?= date('d F Y') ?>)"></textarea>
+		                            </div>
+		                        </div>
+
 		                        <div class="row">
-		                        		<button type="button" id="btn_save_edit_project" class="col-sm-4 offset-md-4 btn btn-sm btn-success" >Save Change</button>
+			                        	<div class="col-md-12 text-center">
+			                        		<button type="button" id="btn_save_edit_project" class="btn btn-sm btn-success btn-brand text-center" >
+												<i class="fa fa-floppy-o"></i>
+				                        		<span style="width: 100%;text-align: center;">&nbsp;&nbsp;&nbsp;Save&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			                        		</button>
+			                        	</div>
 		                        </div>
 		    		</form>
 		    	</div>
@@ -2105,6 +2167,13 @@
 						    	$('#project_symptom').removeClass('hidden');
 						    	$('#project_symptom').attr('disabled',false);
 						    	$('#project_symptom').attr('required',true);
+						    break;
+						    case 'REMARKS':
+						    	$('.title_edit_project').text(field);
+						    	$('#c_project_remarks').removeClass('hidden');
+						    	$('#project_remarks').removeClass('hidden');
+						    	$('#project_remarks').attr('disabled',false);
+						    	$('#project_remarks').attr('required',true);
 						    break;
 						  default:
 						    	alert('something wrong');

@@ -54,15 +54,24 @@ input[type="checkbox"]:checked + label:before {
 <div class="row">
 	<div class="col-md-12">
 		<div class="card">
+			<form id="form_bast" method="post" action="<?= base_url() ?>add_proccess" enctype="multipart/form-data">
 			<div class="card-header">
 				<span class="text-muted">Form submit BAST</span>
-				<h6><?= $NAMA_MITRA?></h6>
+				<h6><?= $NAMA_MITRA?>
+				<div class="form-group pull-right">
+					<input type="checkbox" id="bapp" name="bapp" data-val="bapp" class="form-control">
+      				<label for="bapp" class="pull-left">BAPP</label>
+				</div>
+				</h6>
 			</div>
 			<div class="card-body">
-				<form id="form_bast" method="post" action="<?= base_url() ?>add_proccess" enctype="multipart/form-data">
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
+								<input type="hidden" name="partner_id" id="partner_id" value="<?= $ID_MITRA?>">
+								<input type="hidden" name="partner_name" id="partner_name" value="<?= $NAMA_MITRA?>">
+								<input type="hidden" name="nipnas" id="nipnas" value="<?= $NIPNAS?>">
+								<input type="hidden" name="commend" id="commend">
 								<label class="mini-label">ID  LOP</label>
 								<input type="text" name="id_lop" id="id_lop" class="form-control" value="<?= $ID_LOP?>" readOnly>
 							</div>
@@ -73,7 +82,7 @@ input[type="checkbox"]:checked + label:before {
 
 							<div class="form-group">
 								<label class="mini-label">P8 Date</label>
-								<input type="text" name="no_p8" id="no_p8" class="form-control date-picker" value="<?= $DATE_P8 ?>" required>
+								<input type="text" name="p8_date" id="p8_date" class="form-control date-picker" value="<?= $DATE_P8 ?>" required>
 							</div>
 				
 							<div class="form-group">
@@ -104,25 +113,25 @@ input[type="checkbox"]:checked + label:before {
 
 							<div class="form-group">
 								<label class="mini-label">KL Date</label>
-								<input type="text" name="kl_date" id="kl_date" class="form-control date-picker" placeholder="tanggal kontrak layanan">
+								<input type="text" name="kl_date" id="kl_date" class="form-control date-picker" placeholder="MM/DD/YYYY">
 							</div>
 						</div>
 						
 						<div class="col-md-6">
 							<div class="form-group">
 								<label class="mini-label"> BAST Date</label>
-								<input type="text" name="bast_date" id="bast_date" class="form-control date-picker">
+								<input type="text" name="bast_date" id="bast_date" class="form-control date-picker" required placeholder="MM/DD/YYYY">
 							</div>
 
 							<div class="form-group">
 								<label class="mini-label"> BAST Value</label>
-								<input type="text" name="bast_value" id="bast_value" class="form-control rupiah">
+								<input type="text" name="bast_value" id="bast_value" class="form-control rupiah" required>
 							</div>
 							
 
 							<div class="form-group">
 								<label class="mini-label"> Progress Project(%)</label>
-								<input type="number" name="progress" id="progress" class="form-control">
+								<input type="number" name="progress" id="progress" class="form-control" >
 							</div>
 
 							<div class="form-group">
@@ -241,8 +250,9 @@ input[type="checkbox"]:checked + label:before {
 							<button class="btn btn-success btn-brand btn-md" type="button" id="btn_submit"> <i class="fa fa-plus"></i> <span> Submit &nbsp;</span> </button>
 						</div>
 					</div>
-				</form>
+				
 			</div>
+			</form>
 		</div>
 	</div>
 </div>
@@ -358,6 +368,8 @@ return{
                       if($('#form_bast').valid()){
                           bootbox.prompt({
                                   title: "Confirm Data",
+                                  size: 'large',
+                                  className: 'modal-primary',
                                   placeholder: "Write some note?",
                                   inputType: 'textarea',
                                   buttons: {
@@ -383,7 +395,7 @@ return{
                                         var form = $('form')[0];
                                         var formData = new FormData(form);
                                         $.ajax({
-                                                      url: base_url+'bast/submitBast',
+                                                      url: base_url+'bast/add_proccess',
                                                       type:'POST',
                                                       dataType : "json",
                                                       data:  formData ,
@@ -394,7 +406,7 @@ return{
                                                       success:function(result){
                                                         if(result.data=='success'){
                                                         bootbox.alert("Success!", function(){ 
-                                                        var url = base_url+"bast/view/"+result.id_bast;
+                                                        var url = base_url+"bast/show/"+result.id_bast;
                                                         window.location.href = url;
                                                         
                                                         console.log('success Add BAST!'); 

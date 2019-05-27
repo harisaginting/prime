@@ -2,8 +2,9 @@
  
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
-$spreadsheet = new Spreadsheet();
+$spreadsheet 	= new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
 $sheet->setCellValue('A1', 'Hello World !');
 
@@ -198,6 +199,13 @@ class Hgn_Spreadsheet {
 		$result = $no+2;
 		
 		return $result;
+	}
+
+
+	public function read($file_path){
+		$spreadsheet 	= IOFactory::load($file_path);
+		$sheetData 		= $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+		return $sheetData;
 	}
 
 

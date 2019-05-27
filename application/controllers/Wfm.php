@@ -32,7 +32,7 @@ class Wfm extends MY_Controller
     	$p8    = $this->master_model->get_p8($no_p8);
 
     	$data = array(
-    		'NO_P8'=> $p8['NO_SPK'],
+    		'NO_P8' => $p8['NO_SPK'],
     		'ID_LOP'=> $p8['ID_LOP'],
     		'NO_SO' => $no_so,
     		'VALID' => 0,
@@ -75,8 +75,8 @@ class Wfm extends MY_Controller
             mkdir($upload_path,0777,true);
         }
         $files      = $_FILES['validation_wfm'];
-        $filename   = 'wfm validate '.date('Ymd-hi');
-
+        $filename   = 'wfm_validate '.date('Ymd-hi');
+        $alert      = "";
         $this->load->library('upload');
         $config['upload_path']   = $upload_path;
         $config['allowed_types'] = 'xls|xlsx';
@@ -87,25 +87,60 @@ class Wfm extends MY_Controller
         $this->upload->initialize($config);
         if (!$this->upload->do_upload('validation_wfm'))
         {
-            // case - failure
+            // case - failure\
             $upload_error = array('error' => $this->upload->display_errors());
-            echo json_encode($upload_error);die();
+            $alert        = $alert.$this->alert("alert-danger","Terjadi Kesalahan saat mengupload");
+            $alert        = $alert.json_encode($upload_error);
+            
         }
         else
         {
             // case - success
+            $this->load->library('Hgn_spreadsheet');
             $upload_data = $this->upload->data();
-            //echo json_encode($upload_data);
-            $helper->log('Loading file ' . pathinfo($inputFileName, PATHINFO_BASENAME) . ' using IOFactory to identify the format');
-                $spreadsheet = IOFactory::load($upload_path.'assets/excel/');
-                $sheetData = $spreadsheet
-            //use PhpOffice\PhpSpreadsheet\IOFactory;
-            //return $upload_data;
-        
+            $spreadsheet = $this->hgn_spreadsheet->read($upload_path.$upload_data['file_name']);
+            $sheetData   = $spreadsheet;
+
+            // echo json_encode($sheetData);
+            $alert  = $alert.$this->alert("alert-success","Berhasil mengupload file ".$upload_data['client_name']);
+            //echo json_encode($upload_data);die;
+            foreach ($sheetData as $key => $value) {
+                $value['A'] = trim($value['A']); 
+                $value['B'] = trim($value['B']); 
+                if($this->main_model->check_p8($value['A']) > 0){
+                    if($this->main_model->check_p8_so($value['A'],$value['B']) == 0){
+                       $data = array(
+                            'NO_P8' => $value['A'],
+                            'ID_LOP'=> null,
+                            'NO_SO' => $value['B'],
+                            'VALID' => 0,
+                            'EXIST' => 1,
+                            'UPDATED_BY_ID' => $this->session->userdata('nik_sess'),
+                            'UPDATED_BY_NAME' => $this->session->userdata('nama_sess'),
+                        );
+                       $this->main_model->add_no_so($data); 
+                        $alert  = $alert.$this->alert("alert-success","NO SO ".$value['B']." Telah berhasil ditambahkan ke P8 ".$value['A']);       
+                    }else{
+                        $alert  = $alert.$this->alert("alert-success","NO SO ".$value['B']." Sudah tersedia pada P8 ".$value['A']); 
+                    }
+                }else{
+                        $alert  = $alert.$this->alert("alert-warning","NO P8".$value['A']." Tidak Tersedia di numero");
+                }
+            }
+            $alert  = $alert."<br>".$this->alert("alert-info","Proses upload berhasil untuk  mengecek silahkan klik <a href='".base_url()."wfm'> <strong> Disini</strong></a>"); 
         }
 
+        $this->session->set_flashdata('notification', $alert);
+        redirect(base_url().'wfm/upload');
+
+    }
 
 
-
+    function alert($alert_tipe,$alert_text)
+    {
+        $alert =    '<div class="alert '.$alert_tipe.'">
+                        '.$alert_text.'
+                    </div>';
+        return $alert;
     }
 }

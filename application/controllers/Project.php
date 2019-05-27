@@ -29,7 +29,7 @@ class Project extends MY_Controller
 
 
     function show($id_project=null){
-        if(empty($id_project)){
+        if(empty($id_project)){ 
              redirect(base_url().'project/data');
         }
        
@@ -43,6 +43,7 @@ class Project extends MY_Controller
         $data['current_plan']       = $this->main_model->get_project_current_plan($id_project, $current_week); 
         $data['progress']           = $this->main_model->get_project_progress($id_project);  
         $data['kurva']              = $this->main_model->get_project_curva_s($id_project);
+        $data['remarks']            = $this->main_model->get_project_remarks($id_project);
         $data['arrAssignTo']        = array('SDV','MITRA','SEGMEN','BDM','DSS','TREG');
 
         $data['acq']                = $this->main_model->get_project_acquisition_s_curve($id_project);
@@ -515,11 +516,26 @@ class Project extends MY_Controller
                 $dataSymptom = array(
                     'ID' => $this->getGUID(), 
                     'ID_PROJECT' => $id_project, 
-                    'SYMPTOM' => trim($this->input->post('project_symptom')) 
+                    'SYMPTOM' => trim($this->input->post('project_symptom')),
                     );
 
                 $this->main_model->addSymptom($dataSymptom);
                 break;
+            case 'REMARKS':
+                array_push($key, 'REMARKS');
+                $idRemarks = $this->getGUID();
+                array_push($value, $idRemarks); 
+
+                $dataRemarks = array(
+                    'ID' => $idRemarks, 
+                    'ID_PROJECT' => $id_project, 
+                    'REMARKS' => trim($this->input->post('project_remarks')),
+                    'CREATED_BY' => '['.$this->session->userdata('nik_sess').']'. $this->session->userdata('nama_sess'),
+                    );
+
+                $this->main_model->add_remarks($dataRemarks);
+                break;
+
             default:
                 echo json_encode($result);die;
                 break;

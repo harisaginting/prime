@@ -41,7 +41,7 @@
     <script src="<?= base_url(); ?>assets/plugin/select2/js/select2.full.min.js" type="text/javascript" charset="utf-8"></script>
     
     <!-- Bootbox -->
-    <script src="<?= base_url(); ?>assets/plugin/bootbox.min.js"></script>
+    <script src="<?= base_url(); ?>assets/plugin/bootbox/bootbox.min.js"></script>
 
     <!-- Price Format -->
      <script src="<?= base_url(); ?>assets/plugin/jquery.priceformat.js"></script>

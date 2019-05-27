@@ -16,7 +16,7 @@
 					</div>
 					<div class="form-group">
 						<label> Select P8</label>
-						<select class="form-control" id="init_p8" name="init_p8" required></select>
+						<select class="form-control" id="init_p8" name="init_p8" required disabled></select>
 					</div>
 
 					<div class="form-group text-center">
@@ -35,6 +35,7 @@ var Page = function (){
 	return {
           init: function() { 
           	$(document).on('change','#init_partner',function(){
+          		 $('#init_p8').attr("disabled",false);
           		 $("#init_p8").select2({
                             width: 'resolve',
                             ajax: {

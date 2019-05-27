@@ -18,7 +18,7 @@ class M_Datatable extends CI_Model
 			$query = $this->db
 							/*->select('A.ID_PROJECT')*/
 							->select("CASE A.STATUS WHEN 'LEAD' THEN 'success' WHEN 'LAG' THEN 'warning' ELSE 'danger' END INDICATOR, TO_NUMBER(SUBSTR(A.ID_PROJECT, 5,7)) SEQ, A.UPDATED_DATE,B.PARTNERS, A.ID_PROJECT ,A.NAME, A.TYPE ,A.PM_NAME ,A.DESCRIPTION , A.NIP_NAS NIP_NAS, A.STANDARD_NAME , A.SEGMEN , A.AM_NIK , A.AM_NAME , NVL(C.PLAN,0) WEIGHT, NVL(C.ACH,0) ACH, A.VALUE VALUE,A.STATUS STATUS, A.END_DATE, A.REASON_OF_DELAY, A.NO_QUOTE, A.ID_LOP_EPIC, TO_CHAR(A.END_DATE,'DD-MM-YYYY') END_DATE2, TO_CHAR(A.START_DATE,'DD-MM-YYYY') START_DATE2
-								, CASE WHEN A.STATUS = 'DELAY' THEN (((100 - TO_NUMBER(C.ACH)) / 100) * A.VALUE) WHEN C.ACH > C.PLAN THEN ((100 - TO_NUMBER(C.ACH))/100) * A.VALUE ELSE (((TO_NUMBER(NVL(C.PLAN,0)) - TO_NUMBER(C.ACH)) /100) * A.VALUE) END POTENTIAL_WEEK, (((100 - TO_NUMBER(C.ACH)) / 100) * A.VALUE) POTENTIAL ")
+								, CASE WHEN A.STATUS = 'DELAY' THEN (((100 - TO_NUMBER(C.ACH)) / 100) * A.VALUE) WHEN C.ACH > C.PLAN THEN ((100 - TO_NUMBER(C.ACH))/100) * A.VALUE ELSE (((TO_NUMBER(NVL(C.PLAN,0)) - TO_NUMBER(C.ACH)) /100) * A.VALUE) END POTENTIAL_WEEK, (((100 - TO_NUMBER(C.ACH)) / 100) * A.VALUE) POTENTIAL, R.REMARKS ")
 							->from('PRIME_PROJECT A')
 							->join("(SELECT ID_PROJECT, LISTAGG(A.PARTNER_NAME, ', ') 
 									  WITHIN GROUP (ORDER BY A.ID_PROJECT) AS PARTNERS
@@ -27,6 +27,7 @@ class M_Datatable extends CI_Model
 									  ) B",
 									  "B.ID_PROJECT = A.ID_PROJECT","LEFT")
 							->join("PRIME_MONITORING_PROJECT C","A.ID_PROJECT = C.ID_PROJECT","LEFT")
+							->join("PRIME_PROJECT_REMARKS R","R.ID = A.REMARKS","LEFT")
 							->where('PM_EXIST','1')
 							->where("A.EXIST","1")
 							->where_in('A.STATUS',$arr);
@@ -512,7 +513,7 @@ class M_Datatable extends CI_Model
     # Datatable partner
         var $table_partner= 'CBASE_DIVES';
         var $column_order_partner= array('KODE_PARTNER','NAMA_PARTNER','EMAIL_PARTNER','STATUS_ANPER',null,null); //set column field database for datatable orderable
-        var $column_search_partner= array('NAMA_PARTNER','EMAIL_PARTNER','KODE_PARTNER'); //set column field database for datatable searchable
+        var $column_search_partner= array('UPPER(NAMA_PARTNER)','UPPER(EMAIL_PARTNER)','KODE_PARTNER'); //set column field database for datatable searchable
         var $order_partner= array('NAME' => 'asc'); // default order
         
         public function _get_all_query_partner(){

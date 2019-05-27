@@ -196,3 +196,7 @@ thead{
 	height: 35px !important;
 	border-radius: 2px !important;
 }
+
+.error{
+	color: red;
+}

@@ -75,6 +75,17 @@ class M_Project extends CI_Model
 
 	} 
 
+	function get_project_remarks($id){
+		return $this->db
+				->select("A.ID, A.REMARKS, TO_CHAR(A.DATE_CREATED,'DD MONTH YYYY (HH24:MI)') DATE_C,CREATED_BY")
+				->from("PRIME_PROJECT_REMARKS A")
+				->where("ID_PROJECT",$id)
+				->order_by("DATE_CREATED","DESC")
+				->get()
+				->result_array();
+
+	}
+
 	function get_project_curva_s($id_project) {
 			$query = $this->db->query("	SELECT 'WEEK #'||NVL(WEEK,0) WEEKS, NVL(PLAN,0) PLAN,REAL, PERIODE
 										FROM PRIME_PROJECT_S_CURVE_WEEK
@@ -487,6 +498,12 @@ class M_Project extends CI_Model
 	function addSymptom($data){
 		return $this->db->insert('PRIME_PROJECT_SYMPTOM',$data);
 	}
+
+	// Add Symptom
+	function add_remarks($data){
+		return $this->db->insert('PRIME_PROJECT_REMARKS',$data);
+	}
+
 
 
 

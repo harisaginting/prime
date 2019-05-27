@@ -71,18 +71,24 @@
 
 
 
-                                    var w = "";
+                                    var w     = "";
+                                    var note  = "";
                                     if((obj.STATUS=='DELAY'||obj.STATUS=='LAG')){
                                       if(obj.REASON_OF_DELAY == ""||obj.REASON_OF_DELAY == null){
-                                        w = "&nbsp;&nbsp;&nbsp;<br><span  class='fa fa-exclamation-circle text-danger' data-toggle='tooltip' data-placement='right' data-original-title='Please fill reason of delay (Symptom)' aria-describedby='tooltip549771'></span>";
+                                        w = "&nbsp;&nbsp;&nbsp;<br><span style='font-size:24px;' class='fa fa-exclamation-circle text-danger' data-toggle='tooltip' data-placement='right' data-original-title='Please fill reason of delay (Symptom)' aria-describedby='tooltip549771'></span>";
                                       }else{
                                         w = "<span class='text-primary'><br>SYMPTOM <span class='text-danger'>"+obj.REASON_OF_DELAY+"</span></span>";
                                       }
                                       
                                     }   
 
+                                    if((obj.REMARKS != null) && (obj.REMARKS != '') && (obj.REMARKS != 'null')){
+                                      note = "<br><span class='text-muted'>"+obj.REMARKS+"</span>";
+                                    };
+                                    
+
                                     return "<div style='padding: 5px 10px;'>"+id+"<span style='font-size:12px !important;font-family:sans-serif;font-weight:800;'>"+obj.NAME+"</span>"+"<div class='text-primary' style='font-size:12px;' >[SEGMEN <strong class='text-info' >"+obj.SEGMEN+"</strong>], "
-                                      +"[PM <strong class='text-info' >"+obj.PM_NAME+"</strong>]"+w+"</div></div>";   
+                                      +"[PM <strong class='text-info' >"+obj.PM_NAME+"</strong>]"+note+w+"</div></div>";   
                             }            
                                     
                         }, 
