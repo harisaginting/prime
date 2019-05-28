@@ -79,7 +79,7 @@ class M_Master extends CI_Model {
 
     function get_p8($p8){
         $query = $this->db
-                 ->select("A.*,  TO_CHAR(TANGGAL_BAST,'DD/MM/YYYY')  DATE_P8")
+                 ->select("A.*,  TO_CHAR(TANGGAL_BAST,'MM/DD/YYYY')  DATE_P8")
                  ->from("PRIME_SPK_NUMERO A")
                  ->where("NO_SPK",$p8)
                  ->get()

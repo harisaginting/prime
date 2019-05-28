@@ -1,9 +1,19 @@
 <style type="text/css">
   @import url(https://fonts.googleapis.com/css?family=Open+Sans);
+  input, select {
+    font-family: sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 700;
+  }
+
 
   .img-timeline{
   max-height: 50px;
   border-radius: 50%;
+  }
+
+  .form-control:disabled, .form-control[readonly]{
+    background: #ffffff99;
   }
 
   /*Checkboxes styles*/
@@ -57,12 +67,12 @@
   <div class="card-header">
     <h5>BAST
       <div class="form-group pull-right">
-        <button class="pull-right btn btn-sm btn-danger  ircle2" data-id= "<?= $id_bast; ?>"  id="btn-delete_bast" ><i class="fa fa-trash"></i></button>
+        <button class="pull-right btn btn-sm btn-danger  ircle2" data-id= "<?= $id_bast; ?>"  id="btn_delete_bast" ><i class="fa fa-trash"></i></button>
       </div>
     </h5>
   </div>
   <div class="card-body">
-    <form id="formBast">
+    <form id="form_bast">
       <div class="row">
 
       <?php if(!empty($oldBast)) :  ?>
@@ -97,25 +107,27 @@
 
 <div class="col-md-12">
     <div class="row">
-        
+          
+           <?php if(!empty($bast['NO_BAST'])) : ?>  
             <div class="col-md-6" style="margin-bottom: 10px;">
-              <label>No. BAST</label>
+              <label class="mini-label">No. BAST</label>
                 <input type="text" class="form-control" id="no_bast" name="no_bast" value="<?= !empty($bast['NO_BAST']) ? $bast['NO_BAST'] : ''; ?>" readOnly placeholder="<?php if(empty($bast['NO_BAST'])) : ?>Approve BAST to get BAST number<?php endif; ?>">
             </div>
+            <?php endif; ?>
         <?php if(!empty($bast['ID_PROJECT'])) : ?>    
           
             <div class="col-md-2" style="margin-bottom: 10px;">
-              <label>ID PROJECT</label>
+              <label class="mini-label">ID PROJECT</label>
                 <input type="text" class="form-control"  value="<?= !empty($bast['ID_PROJECT']) ? $bast['ID_PROJECT'] : ''; ?>" readOnly>
             </div>
 
             <div class="col-md-2" style="margin-bottom: 10px;">
-              <label>ID LOP</label>
+              <label class="mini-label">ID LOP</label>
                 <input type="text" class="form-control"  value="<?= !empty($bast['ID_LOP']) ? $bast['ID_LOP'] : '-'; ?>" readOnly>
             </div>
 
             <div class="col-md-2" style="margin-bottom: 10px;">
-              <label style="visibility: hidden;">View Project</label>
+              <label class="mini-label" style="visibility: hidden;">View Project</label>
               <a class="btn btn-success btn-brand text-left btn-sm" href="<?= base_url().'project/show/'.$bast['ID_PROJECT'] ?>">
                 <i class="fa fa-location-arrow"></i><span>View Project </span>
               </a>
@@ -126,14 +138,14 @@
 
       <?php if(!empty($bast['FILENAME'])) : ?>
         <div class="col-sm-12" style="margin-bottom: 10px;">
-          <label>Document BAST</label>
+          <label class="mini-label">Document BAST</label>
             <input type="text" class="form-control" id="filename" name="filename" placeholder="MM/DD/YYYY" value="<?= !empty($bast['FILENAME']) ? $bast['FILENAME'] : ''; ?>" readOnly>
         </div>
       <?php endif; ?>
       
       <div class="col-sm-6">
           <div class="form-group">
-            <label for="name">Bast Date *</label>
+            <label class="mini-label" for="name">Bast Date *</label>
             <input type="hidden" name="id_bast" value="<?= $id_bast; ?>">
             <input type="hidden" name="id_project" id="id_project" value="<?= !empty($bast['ID_PROJECT']) ? $bast['ID_PROJECT'] : ''; ?>">
             <input type="hidden" name="id_lop" id="id_lop" value="<?= !empty($bast['ID_LOP']) ? $bast['ID_LOP'] : ''; ?>">
@@ -143,75 +155,58 @@
 
 
           <div class="form-group">
-            <label for="name">Partner / Subsidiary</label>
+            <label class="mini-label" for="name">Partner / Subsidiary</label>
             <input type="text" name="" class="form-control" value="<?= !empty($bast['NAMA_MITRA']) ? $bast['NAMA_MITRA'] : '"'  ?> " readOnly>
           </div>
 
           <div class="form-group hidden">
-            <label for="name">Partner</label>
-            <input type="hidden" name="partner_id" id="partner_id" value="<?= !empty($bast['ID_MITRA']) ? $bast['ID_MITRA'] : '' ?>">
-            <input type="hidden" name="partner_name" id="partner_name" value="<?= !empty($bast['NAMA_MITRA']) ? $bast['NAMA_MITRA']: ''; ?>">
-            <select style="width: 100%;" name="partner" id="partner" class="form-control Jselect2">
-                <option value="<?= !empty($bast['ID_MITRA']) ? $bast['ID_MITRA'].'"'.' selected' : '"'  ?>  " ><?= !empty($bast['NAMA_MITRA']) ? $bast['NAMA_MITRA'] : 'Select Partner'; ?></option> 
-                        <?php 
-                foreach ($list_partner as $key => $value) {
-                    ?>
-                        <option value="<?=$list_partner[$key]['KODE_PARTNER'].'||'.$list_partner[$key]['NAMA_PARTNER']?>"><?=$list_partner[$key]['NAMA_PARTNER']?></option>
-                    <?php
-                        }
-                    ?> 
-            </select>
+            <label class="mini-label" for="name">Partner</label>
+            <input type="hidden" name="partner_id" id="partner_id" value="<?= !empty($bast['ID_MITRA']) ? $bast['ID_MITRA'] : '0' ?>">
+            <input type="text" class="form-control" name="partner_name" id="partner_name" value="<?= !empty($bast['NAMA_MITRA']) ? $bast['NAMA_MITRA']: ''; ?>">
           </div>
 
           
-
           <div class="form-group">
-            <label for="name">No. <?= !empty($bast['P71']) ? 'P71' : 'SPK' ?> *</label>
-            <input type="text" name="" class="form-control" value="<?= !empty($bast['NO_SPK']) ? $bast['NO_SPK'] : '"'  ?> " readOnly>
-          </div>
-
-
-          <div class="form-group hidden">
-            <label for="name">No. SPK *</label> <label class="text-warning" id="wSPK"></label>
-            <select style="width: 100%;" name="spk" id="spk" class="form-control" required readOnly>
+            <label class="mini-label" for="name">No. P8 *</label> <label class="mini-label" class="text-warning" id="wSPK"></label>
+            <select style="width: 100%;" name="no_p8" id="no_p8" class="form-control" required readOnly>
                 <option value="<?= !empty($bast['NO_SPK']) ? $bast['NO_SPK'].'"'.' selected' : '"'  ?>  " ><?= !empty($bast['NO_SPK']) ? $bast['NO_SPK'] : ''; ?></option>
             </select>
           </div>
 
           <div class="form-group">
-            <label>Segmen *</label>
+            <label class="mini-label">Segmen *</label>
             <input type="text" style="width: 100%;" name="segmen" id="segmen" class="form-control" value="<?= $bast['SEGMENT']; ?>" readOnly>
           </div>
 
           <div class="form-group">
-            <label for="name">Customer Name *</label>
+            <label class="mini-label" for="name">Customer Name *</label>
             <input type="hidden" id="nipnas" name="nipnas" value="<?= !empty($bast['NIPNAS'])? $bast['NIPNAS'] : ''; ?>">
             <input type="hidden" id="customer" name="customer" value="<?= !empty($bast['NAMACC']) ? $bast['NAMACC'] : '' ?>" >
             <input type="text" name="customer" id="customer" class="form-control" value="<?= $bast['NAMACC']; ?>" required readOnly>
           </div>
 
           <div class="form-group">
-            <label for="name">SPK Date *</label>
-            <input type="text" class="form-control date-picker" id="spk_date" name="spk_date" placeholder="MM/DD/YYYY" required value="<?= !empty($bast['TGL_SPK']) ? $bast['TGL_SPK2'] : ''; ?>" readOnly>
+            <label class="mini-label" for="name">P8 Date *</label>
+            <input type="text" class="form-control date-picker" id="p8_date" name="p8_date" placeholder="MM/DD/YYYY" required value="<?= !empty($bast['TGL_SPK']) ? $bast['TGL_SPK2'] : ''; ?>" readOnly>
           </div>
 
           <div class="form-group">
-            <label for="name">Project Name *</label>
+            <label class="mini-label" for="name">Project Name *</label>
             <textarea id="project_name" name="project_name" rows="3" class="form-control" placeholder="Project Name" required><?= !empty($bast['PROJECT_NAME']) ? $bast['PROJECT_NAME'] : ''; ?></textarea>
           </div>
 
           <div class="form-group">
-            <label for="name">Project Value (Before PPN 10%)*</label>
+            <label class="mini-label" for="name">Project Value (Before PPN 10%)*</label>
             <input type="text" class="form-control rupiah" id="value" name="value" placeholder="Project Value" required value="<?= !empty($bast['NILAI_PEKERJAAN']) ? $bast['NILAI_PEKERJAAN'] : '0';   ?>">
           </div>
 
           <div class="form-group">
-            <label for="name">No. KL</label>
+            <label class="mini-label" for="name">No. KL</label>
             <input type="text" class="form-control" id="kl" name="kl" placeholder="No. KL" value="<?= !empty($bast['NO_KL'])? $bast['NO_KL'] : '' ?>">
           </div>
 
           <div class="form-group">
-            <label for="name">KL Date</label>
+            <label class="mini-label" for="name">KL Date</label>
             <input type="text" class="form-control date-picker" id="kl_date" name="kl_date" placeholder="MM/DD/YYYY" value="<?= !empty($bast['TGL_KL2']) ? $bast['TGL_KL2'] : ''; ?>" readOnly>
           </div>
       </div>
@@ -219,12 +214,12 @@
       <div class="col-sm-6">
 
         <div class="form-group">
-          <label for="name">BAST Value (IDR) *</label>
+          <label class="mini-label" for="name">BAST Value (IDR) *</label>
           <input type="text" class="form-control rupiah" id="bast_value" name="bast_value" placeholder="BAST Value" required value="<?= !empty($bast['NILAI_RP_BAST']) ? $bast['NILAI_RP_BAST'] : '0'; ?>">
         </div>
 
         <div class="form-group">
-          <label for="name">Signer *</label>
+          <label class="mini-label" for="name">Signer *</label>
           <select style="width: 100%;" name="signer" id="signer" class="form-control" required>
               <option disabled>Select Signer</option>
               <option value="Coordinator Project Management" <?= ((!empty($bast['PENANDA_TANGAN']))&&($bast['PENANDA_TANGAN']=='Coordinator Project Management')) ? 'selected' : ''; ?> >OSM Service Delivery DES - Sosro Hutomo Karsosoemo</option>
@@ -235,7 +230,7 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label ">Payment Scheme *</label>
+            <label class="mini-label" class="control-label ">Term of Payment *</label>
             <select style="width: 100%;" name="type_bast" id="type_bast" class="form-control" style="width: 100%;" required>
                 <option value="" disabled selected>Select Type</option>
                 <option value="OTC" <?= $bast['TYPE_BAST']=='OTC' ? 'selected' : ''; ?> >OTC</option>
@@ -247,7 +242,7 @@
         </div>
 
         <div id="progress_periode" class="form-group">
-          <label class="control-label">Periode Progress Reccuring</label>
+          <label class="mini-label" class="control-label">Periode Progress Reccuring</label>
             <div class="input-daterange input-group">
               <input type="text" class="form-control date-picker" name="recc_start_date" placeholder="mm/dd/yyyy" value="<?= !empty($bast['RECC_START_DATE']) ? $bast['RECC_START_DATE2'] : ''; ?>">
                 <span class="input-group-addon" style="color:#000;">&nbsp;&nbsp; to &nbsp;&nbsp;</span>
@@ -256,40 +251,40 @@
           </div>
   
           <div id="c_reccuring_val" class="form-group hidden">
-          <label class="control-label">Reccuring Value (Rp.)</label>
+          <label class="mini-label" class="control-label">Reccuring Value (Rp.)</label>
               <input type="text" class="form-control rupiah" id="reccuring_val" name="reccuring_val" placeholder="Reccuring value"
               value="<?= !empty($bast['NILAI_RECCURING']) ? $bast['NILAI_RECCURING'] :'' ?>" >
           </div>
 
           <div class="form-group" id="c_progress_actual">
-            <label for="progress_actual">Progress (%)</label>
+            <label class="mini-label" for="progress_actual">Progress (%)</label>
             <input type="number" class="form-control" id="progress_actual" name="progress_actual" placeholder="Progress" value="<?= !empty($bast['PROGRESS_LAPANGAN']) ? $bast['PROGRESS_LAPANGAN'] : ''; ?>">
           </div>
 
           <div class="form-group hidden" id="c_termin">
-            <label for="name">Termin</label>
+            <label class="mini-label" for="name">Termin</label>
             <input type="text" class="form-control" id="termin" name="termin" value="<?= !empty($bast['NAMA_TERMIN'])? $bast['NAMA_TERMIN'] : ''; ?>" placeholder="Termin Remarks">
           </div>
 
            <div id="evidence" class="form-group" style="margin-bottom: 7px !important">
-               <label>Evidence</label>
+               <label class="mini-label">Evidence</label>
                <div class="row">
                <div class="col-sm-2">
                  <div class="boxes">
                     <input type="checkbox" id="cP71" name="cP71" data-val="P71" <?= ((!empty($evidence[10]))&&($evidence[10]!= ' ')) ? 'checked' : '';  ?>>
-                    <label for="cP71">P7-1</label>
+                    <label class="mini-label" for="cP71">P7-1</label>
 
                     <input type="checkbox" id="cSP" name="cSP" data-val="SP" <?= ((!empty($evidence[11]))&&($evidence[11]!= ' ')) ? 'checked' : '';  ?>>
-                    <label for="cSP">SP</label>
+                    <label class="mini-label" for="cSP">SP</label>
 
                     <input type="checkbox" id="cSPK" name="cSPK" data-val="SPK" <?= ((!empty($evidence[5]))&&($evidence[5]!= ' ')) ? 'checked' : '';  ?> >
-                    <label for="cSPK">SPK</label>
+                    <label class="mini-label" for="cSPK">SPK</label>
 
                     <input type="checkbox" id="cWO" name="cWO"  data-val="WO" <?= ((!empty($evidence[6]))&&($evidence[6]!= ' ')) ? 'checked' : '';  ?> >
-                    <label for="cWO">WO</label>
+                    <label class="mini-label" for="cWO">WO</label>
 
                     <input type="checkbox" id="cKL" name="cKL" data-val="KL" <?= ((!empty($evidence[7]))&&($evidence[7]!= ' ')) ? 'checked' : '';  ?> >
-                    <label for="cKL">KL</label>
+                    <label class="mini-label" for="cKL">KL</label>
                   </div>
                </div>
 
@@ -297,28 +292,28 @@
                  <div class="boxes">
 
                     <input type="checkbox" id="Baut" name="Baut" data-val="Baut" <?= ((!empty($evidence[9]))&&($evidence[9]!= ' ')) ? 'checked' : '';  ?>>
-                    <label for="Baut" >BA Uji Terima (BAUT) / BAPP Smart Building</label>
+                    <label class="mini-label" for="Baut" >BA Uji Terima (BAUT) / BAPP Smart Building</label>
 
                     <input type="checkbox" id="BAprogress2" name="BAprogress2" data-val="BAprogress2" <?= ((!empty($evidence[12]))&&($evidence[12]!= ' ')) ? 'checked' : '';  ?>>
-                    <label for="BAprogress2" >Lampiran Rincian Perhitungan Progress</label>
+                    <label class="mini-label" for="BAprogress2" >Lampiran Rincian Perhitungan Progress</label>
 
                     <input type="checkbox" id="BAcustomer" name="BAcustomer" data-val="BAcustomer" <?= ((!empty($evidence[0]))&&($evidence[0]!= ' ')) ? 'checked' : '';  ?> >
-                    <label for="BAcustomer">BA Customer / BA Format Standar</label>
+                    <label class="mini-label" for="BAcustomer">BA Customer / BA Format Standar</label>
 
                     <input type="checkbox" id="BAperformansi" name="BAperformansi" data-val="BAperformansi" <?= ((!empty($evidence[1]))&&($evidence[1]!= ' ')) ? 'checked' : '';  ?> >
-                    <label for="BAperformansi">BA Performansi (Untuk layanan berbasis SLG)</label>
+                    <label class="mini-label" for="BAperformansi">BA Performansi (Untuk layanan berbasis SLG)</label>
 
                     <input type="checkbox" id="BArekonsiliasi" name="BArekonsiliasi" data-val="BArekonsiliasi" <?= ((!empty($evidence[2]))&&($evidence[2]!= ' ')) ? 'checked' : '';  ?>  >
-                    <label for="BArekonsiliasi">BA Rekonsiliasi (Untuk layanan Transaksional berbasis rekon)</label>
+                    <label class="mini-label" for="BArekonsiliasi">BA Rekonsiliasi (Untuk layanan Transaksional berbasis rekon)</label>
 
                     <input type="checkbox" id="BAketerlambatan" name="BAketerlambatan" data-val="BAketerlambatan" <?= ((!empty($evidence[4]))&&($evidence[4]!= ' ')) ? 'checked' : '';  ?>  >
-                    <label for="BAketerlambatan" >BA Keterlambatan Delivery</label>
+                    <label class="mini-label" for="BAketerlambatan" >BA Keterlambatan Delivery</label>
 
                     <input type="checkbox" id="BAprogress" name="BAprogress" data-val="BAprogress" <?= ((!empty($evidence[3]))&&($evidence[3]!= ' ')) ? 'checked' : '';  ?> >
-                    <label for="BAprogress" >BAPP (BA Progress Pekerjaan)</label>
+                    <label class="mini-label" for="BAprogress" >BAPP (BA Progress Pekerjaan)</label>
 
                     <input type="checkbox" id="OtherE" name="OtherE" data-val="Other" class="OtherE" <?= ((!empty($evidence[13]))&&($evidence[13]!= ' ')) ? 'checked' : '';  ?> >
-                    <label for="OtherE" class="OtherE" >Other</label>
+                    <label class="mini-label" for="OtherE" class="OtherE" >Other</label>
                     <input type="text" class="form-control <?= ((!empty($evidence[13]))&&($evidence[13]!= ' ')) ? '' : 'hidden';  ?>" name="val_other" id="val_other" placeholder="type another attached evidence" value="<?= ((!empty($evidence[13]))&&($evidence[13]!= ' ')) ? $evidence[13] : '';  ?>" >
                   
                   </div>          
@@ -327,7 +322,7 @@
            </div> 
 
           <div class="form-group hidden">
-            <label for="name">Project Manager</label>
+            <label class="mini-label" for="name">Project Manager</label>
             <input type="hidden" class="form-control" id="pm_name" name="pm_name" val="<?= !empty($bast['NAMA_PM']) ? $bast['NAMA_PM'] : ''; ?>">
             <select style="width: 100%;" name="pm" id="pm" class="form-control">
                 <option val="<?= !empty($bast['NIK_PM']) ? $bast['NIK_PM'] : ''; ?>"><?= !empty($bast['NIK_PM']) ? $bast['NIK_PM'] : ''; ?></option>
@@ -335,16 +330,13 @@
           </div>
 
           <div class="form-group ">
-            <label>Email PIC Partner / Subsidiary *</label>
-            <input type="hidden" class="form-control" id="email_pic_partner2" name="email_pic_partner2">
-            <select style="width: 100%;" name="email_pic_partner" id="email_pic_partner" class="form-control" val="<?= !empty($bast['EMAIL_MITRA']) ? $bast['EMAIL_MITRA'] : ''; ?>" required>
-                <option val="<?= !empty($bast['EMAIL_MITRA']) ? $bast['EMAIL_MITRA'] : ''; ?>" ><?= !empty($bast['EMAIL_MITRA']) ? $bast['EMAIL_MITRA'] : ''; ?></option>
-            </select>
+            <label class="mini-label">Email Person In Charge *</label>
+            <input type="email" class="form-control" id="email_pic" name="email_pic" value="<?= $bast['EMAIL_MITRA'] ?>" required>
           </div>
 
           <div class="form-group" id="c_pic_partner">
-            <label>PIC Partner / Subsidiary *</label>
-             <input type="text" class="form-control" id="pic_partner" name="pic_partner" placeholder="PIC Partner / Subsidiary"  value="<?= !empty($bast['PIC_MITRA']) ? $bast['PIC_MITRA'] : ''; ?>">
+            <label class="mini-label">Person In Charge *</label>
+             <input type="text" class="form-control" id="pic" name="pic" placeholder="Name of PIC"  value="<?= !empty($bast['PIC_MITRA']) ? $bast['PIC_MITRA'] : ''; ?>">
           </div>
 
           <input type="hidden" class="form-control" id="evidence_field" name="evidence">
@@ -361,7 +353,7 @@
 
       <div class="col-sm-12">
         <div class="form-group ">
-          <label><span class="text-primary">Document Status</span></label>
+          <label class="mini-label"><strong class="text-primary"> <i class="fa fa-info-circle"></i> </strong>Document Status</label>
           <div class="input-group">
             <select name="status" id="status" class="form-control text-primary" style="height: inherit;font-size: 20px !important;">
                   <?php if(!empty($bast['STATUS'])&&$bast['STATUS']=='SUBMIT BY PARTNER') :  ?>
@@ -391,7 +383,10 @@
                   <?php if(!empty($bast['STATUS'])&&$bast['STATUS']=='CHECK BY ADM') :  ?>\
                   <option value="<?= $bast['STATUS']; ?>" style="color:#000 !important;"><?= $bast['STATUS']; ?></option>
                   <option value="CHECK BY ADM" <?= (!empty($bast['STATUS'])&&$bast['STATUS']=='CHECK BY ADM') ? ' selected' : '' ?> >CHECK BY ADMIN</option>  
-                  <option value="CHECK BY SE DI" <?= (!empty($bast['STATUS'])&&$bast['STATUS']=='CHECK BY SE DI') ? ' selected' : '' ?> >CHECK BY SE DI</option>
+                      <?php if($bast['PENANDA_TANGAN'] == 'Senior Expert Delivery and Integration' ) : ?>
+                          <option value="CHECK BY SE DI" <?= (!empty($bast['STATUS'])&&$bast['STATUS']=='CHECK BY SE DI') ? ' selected' : '' ?> >CHECK BY SE DI</option>
+                      <?php endif; ?>
+                  
                   <option value="CHECK BY SE PMO" <?= (!empty($bast['STATUS'])&&$bast['STATUS']=='CHECK BY SE PMO') ? ' selected' : '' ?> >CHECK BY SE PMO</option>   
                   <option value="REVISION" <?= (!empty($bast['STATUS'])&&$bast['STATUS']=='REVISION') ? ' selected' : '' ?> >REVISION</option>
                   <?php endif; ?> 
@@ -476,7 +471,7 @@
         </div>
 
         <div class="form-group hidden" id="c_revision_symptoms">
-          <label>Symptoms Revision</label>
+          <label class="mini-label">Symptoms Revision</label>
           <select multiple="true" class="form-control Jselect2" name="revision_symptoms[]" id="revision_symptoms">
             <option value="Typo Penulisan"><i>Typo</i> Penulisan</option>
             <option value="Salah Penanggalan">Salah Penanggalan</option>
@@ -492,43 +487,40 @@
 
      
     </form>
-
-
       <div class="col-sm-12">
-          <label><strong>History Approval</strong></label>
+          <label class="mini-label"><strong>History Approval</strong></label>
           <?php if(!empty($history)) : ?>
               <?php foreach($history as $key=>$value) :?>
                 
-
-              <div class="row">   
-              <!-- timeline item 1 left dot -->
-                  <div class="col-auto text-center flex-column d-none d-sm-flex"  >
-                    <div class="row h-50">
-                      <div class="col">&nbsp;</div>
-                      <div class="col">&nbsp;</div>
-                    </div>
-                    <h5 class="m-2">
-                      <span class="badge badge-pill bg-light border">&nbsp;</span>
-                    </h5>
-                    <div class="row h-50">
-                      <div class="col border-right">&nbsp;</div>
-                      <div class="col">&nbsp;</div>
-                    </div>
-                  </div>
-                  <!-- timeline item 1 event content -->
-                  <div class="col py-2">
-                    <div class="card">
-                      <div class="card-body">
-                          <div class="float-right text-muted"><?= $history[$key]['TIME']; ?><span class="tex-muted">
-                            <br><span class="text-black"><?= $history[$key]['NAME_USER']; ?></span>
-                          </span>
-                        </div>
-                        <img class="img-timeline" src="<?= !empty($history[$key]['PHOTO_USER']) ? $history[$key]['PHOTO_USER'] : base_url().'assets/img/avatars/default.png';?>" alt="">
-                        <p class="card-text"><strong><?= $history[$key]['STATUS']; ?></strong></p>
-                        <p class="card-text"><?= $history[$key]['COMMEND']; ?></p>
-                      </div>
-                    </div>
-                  </div>
+              <div class="row">
+              <div class="col-auto text-center flex-column d-none d-sm-flex">
+              <div class="row h-50">
+              <div class="col border-right">&nbsp;</div>
+              <div class="col">&nbsp;</div>
+              </div>
+              <h5 class="m-2">
+              <span class="badge badge-pill <?=  $key == 0 ? 'bg-success' : 'bg-light' ?>  border ">&nbsp;</span>
+              </h5>
+              <div class="row h-50">
+              <div class="col border-right">&nbsp;</div>
+              <div class="col">&nbsp;</div>
+              </div>
+              </div>
+              <div class="col py-2">
+              <div class="card">
+              <div class="card-body <?=  $key == 0 ? 'bg-success' : 'bg-light' ?>">
+              <div class="float-right">
+                <img class="img-timeline" src="<?= !empty($history[$key]['PHOTO_USER']) ? $history[$key]['PHOTO_USER'] : base_url().'assets/img/avatars/default.png';?>" alt="?= $value['NAME_USER'] ?>" style="float: right;">
+                
+                <span style="margin-right: 20px;"><strong><?= $value['NAME_USER'] ?></strong>,<?= $value['TIME'] ?></span>
+                
+              </div>
+              <h5 class="card-title"><?=$value['STATUS']?>
+              </h5>
+              <p class="card-text"><?= $value['COMMEND'] ?></p>
+              </div>
+              </div>
+              </div>
               </div>
                     
               <?php endforeach; ?>
@@ -581,3 +573,249 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+    var Page = function () {  
+     <?php if(!empty($bast['FILENAME_URI'])) : ?>
+              $("#document").fileinput({
+                  overwriteInitial: false,
+                  initialPreview: [
+                      "https://prime.telkom.co.id/<?= $bast['FILENAME_URI']; ?>",
+                  ],
+                  initialPreviewAsData: true,
+                  initialPreviewConfig: [
+                      {type: "pdf", url: "https://prime.telkom.co.id/<?= $bast['FILENAME_URI']; ?>", downloadUrl: "https://prime.telkom.co.id/<?= $bast['FILENAME_URI']; ?>",caption : "<?= $bast['FILENAME']; ?>"}, 
+                  ],
+                  purifyHtml: true, 
+                  autoReplace: true,
+                  maxFileCount: 1,
+                  overwriteInitial: true,
+                  initialPreviewShowDelete : false,                   
+                  showRemove:false,
+                  showUpload:false,
+              });
+            <?php endif; ?>
+
+      var dTypeBast = function($vals=null) {
+          $("#c_termin").addClass('hidden');    
+          $("#progress_periode").addClass('hidden');   
+          //$("#c_progress_actual").addClass('hidden'); 
+          $("#c_reccuring_val").addClass('hidden'); 
+           switch ($vals) {
+              case "OTC":
+                  /*$("#bast_value").val($('#value').val());*/  
+                  break;
+              case "TERMIN":
+                  $("#c_termin").removeClass('hidden');  
+                  break;
+              case "PROGRESS":
+                  $("#c_progress_actual").removeClass('hidden');   
+                  break;
+              case "RECURRING":
+                  $("#progress_periode").removeClass('hidden');  
+                  break;
+              case "OTC & RECURRING":;
+                  $("#progress_periode").removeClass('hidden');  
+                  $("#c_reccuring_val").removeClass('hidden');  
+                  break;
+           } 
+        }; 
+
+
+      return {
+          init: function() { 
+              dTypeBast($('#type_bast').val());
+
+              <?php if($bast['TYPE_BAST']=='TERMIN') :  ?>
+              $("#c_termin").removeClass('hidden');  
+              <?php endif; ?>
+
+              <?php if($bast['TYPE_BAST']=='PROGRESS') :  ?>
+              $("#c_progress_actual").removeClass('hidden');  
+              <?php endif; ?>
+
+              <?php if($bast['TYPE_BAST']=='RECURRING') :  ?>
+              $("#progress_periode").removeClass('hidden'); 
+              <?php endif; ?>
+
+              $(document).on('change','#type_bast',function(e){
+                    e.stopImmediatePropagation();
+                    dTypeBast($(this).val());
+              });
+
+              $(document).on('change','#status',function(e){
+                    e.stopImmediatePropagation();
+                    $('#c_document').addClass('hidden');
+                    $('#c_revision_symptoms').addClass('hidden');
+
+
+                    if($('#status').val()=='DONE'){
+                      $('#c_document').removeClass('hidden');
+                      $('#document').fileinput({
+                        initialPreview  : false,
+                        showUpload      : false,
+                        uploadAsync     : false,
+                        showUpload      : false,
+                        autoReplace: true,
+                        maxFileCount: 1,
+                      }); 
+                    }
+
+                    if($('#status').val()=='REVISION'){
+                      $('#c_revision_symptoms').removeClass('hidden');
+                    }
+              });
+
+              $(document).on('click','.OtherE',function(e){
+                if ($('#OtherE').is(':checked')) {
+                      $('#val_other').removeClass('hidden');
+                }else{
+                      $('#val_other').addClass('hidden');
+                }  
+              }); 
+
+              $(document).on('click','#btn_delete_bast', function (e) {
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                var id = $(this).data('id');
+                console.log(id);
+                bootbox.confirm({
+                      message: "Delete This Project`?",
+                      buttons: {
+                          confirm: {
+                              label: 'Yes',
+                              className: 'btn-success'
+                          },
+                          cancel: {
+                              label: 'No',
+                              className: 'btn-danger'
+                          }
+                      },
+                      callback: function (result) {
+                          if(result){
+                              $.ajax({
+                                            url: base_url+'bast/delete_bast',
+                                            type:'POST',
+                                            data:  {id : id} ,
+                                            async : true,
+                                            dataType : "json",
+                                            success:function(result){
+                                            $('#pre-load-background').fadeOut();
+                                             if(result.data=='success'){
+                                              bootbox.alert("Success!", function(){ 
+                                              window.location.href = base_url+'bast/show/<?= $id_bast; ?>' ;
+                                              });
+                                            }else{
+                                              bootbox.alert("Failed!", function(){});
+                                              }
+                                            return result;
+                                            }
+
+                                    });
+                          }
+                      }
+                  });  
+                });
+
+
+              $(document).on('click','#btn_update',function(e){
+                    e.stopImmediatePropagation();
+                    var statusOld = '<?= $bast['STATUS']; ?>';
+                    var statusNew = $('#status').val();
+                      var evidence = [];
+                      if ($('#BAcustomer').is(':checked')) {evidence.push($('#BAcustomer').data('val'))}else{evidence.push(' ');}
+                      if ($('#BAperformansi').is(':checked')) {evidence.push($('#BAperformansi').data('val'))}else{evidence.push(' ');}
+                      if ($('#BArekonsiliasi').is(':checked')) {evidence.push($('#BArekonsiliasi').data('val'))}else{evidence.push(' ');}
+                      if ($('#BAprogress').is(':checked')) {evidence.push($('#BAprogress').data('val'))}else{evidence.push(' ');}
+                      if ($('#BAketerlambatan').is(':checked')) {evidence.push($('#BAketerlambatan').data('val'))}else{evidence.push(' ');}   
+                      if ($('#cSPK').is(':checked')) {evidence.push($('#cSPK').data('val'))}else{evidence.push(' ');}    
+                      if ($('#cWO').is(':checked')) {evidence.push($('#cWO').data('val'))}else{evidence.push(' ');}    
+                      if ($('#cKL').is(':checked')) {evidence.push($('#cKL').data('val'))}else{evidence.push(' ');}       
+                     /*8*/ evidence.push($('#nama_termin').val());    
+                      if ($('#Baut').is(':checked')) {evidence.push($('#Baut').data('val'))}else{evidence.push(' ');} 
+                      if ($('#cP71').is(':checked')) {evidence.push($('#cP71').data('val'))}else{evidence.push(' ');}   
+                      if ($('#cSP').is(':checked')) {evidence.push($('#cSP').data('val'))}else{evidence.push(' ');}  
+                      if ($('#BAprogress2').is(':checked')) {evidence.push($('#BAprogress2').data('val'))}else{evidence.push(' ');}  
+                      if ($('#OtherE').is(':checked')) {evidence.push($('#val_other').val())}else{evidence.push(' ');}  
+                      $('#evidence_field').val(evidence);  
+                      
+                      $('#evidence_field').val(evidence);
+
+                      if(statusOld!=statusNew){
+                        if($('#form_bast').valid()){
+                              bootbox.prompt({
+                                    title: "Confirm Data",
+                                    placeholder: "Write some note?",
+                                    inputType: 'textarea',
+                                    size : 'large',
+                                    buttons: {
+                                        confirm: {
+                                            label: '<i class="fa fa-check"></i> Proses',
+                                            className: 'btn-success'
+                                        },
+                                        cancel: {
+                                            label: '<i class="fa fa-times"></i> Batal',
+                                            className: 'btn-danger col-sm-offset-4'
+                                        }
+                                    },
+                                    callback: function(result) {
+                                      $('#pre-load-background').fadeOut();
+                                        if(result!=null){
+                                          $('#commend').val(result);
+                                          $('#pre-load-background').fadeIn();
+                                          $('.rupiah').unmask();
+                                          $('#value').val($('#value').unmask());
+                                          $('#bast_value').val($('#bast_value').unmask());
+                                          $('#reccuring_val').val($('#reccuring_val').unmask());
+                                          var form = $('form')[0];
+                                          var formData = new FormData(form);
+                                          $.ajax({
+                                                    url: base_url+'bast/update_proccess',
+                                                    type:'POST',
+                                                    dataType : "json",
+                                                    data:  formData ,
+                                                    async : true, 
+                                                    processData: false,
+                                                    contentType: false,
+                                                    processData:false,
+                                                    success:function(result){
+                                                      if(result.data=='success'){
+                                                      bootbox.alert("Success!", function(){ 
+                                                      window.location.href = base_url+"bast/show/"+result.id_bast;
+                                                      console.log('success update BAST!'); });
+                                                      }else{
+                                                      bootbox.alert("Failed!", function(){ 
+                                                      console.log('failed update BAST!'); });
+                                                      }
+                                                    return result;
+                                                    },
+                                                     error: function(xhr, error){
+                                                            bootbox.alert("Failed!", function(){ 
+                                                            console.log('failed update BAST!'); });
+                                                     },
+
+                                            });
+                                          $('#pre-load-background').fadeOut();
+
+                                        }
+                                        else{
+                                            bootbox.hideAll();
+                                        }
+                                    }
+                                }); 
+                              /**/
+                        }
+                      }else{
+                        bootbox.alert("Status document has not change!", function(){});
+                      }
+              });
+          }
+      }
+
+  }();
+
+  jQuery(document).ready(function() {
+      Page.init();
+  });       
+           
+</script>

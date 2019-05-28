@@ -271,8 +271,8 @@ class M_Datatable extends CI_Model
 
    	## Datatable BAST
 	    var $table_bast = 'PRIME_BAST_HGN';
-	    var $column_order_bast = array('H1.NO_SPK',"H1.NAMA_MITRA",'H1.NAMACC','H1.TYPE_BAST','H1.TGL_BAST','TO_NUMBER(H1.NILAI_RP_BAST)','H1.STATUS',null); //set column field database for datatable orderable
-	    var $column_search_bast = array('UPPER(H1.PROJECT_NAME)','UPPER(H1.NO_SPK)','UPPER(H1.NAMACC)','UPPER(H1.NAMA_MITRA)','UPPER(H1.NAMA_PM)','H1.PENANDA_TANGAN','H1.NO_KL','H1.SEGMENT','H1.STATUS','H1.SEGMENT','H1.ID_BAST','H1.NO_BAST'); //set column field database for datatable searchable
+	    var $column_order_bast = array('H1.NO_SPK',"H1.NAMA_MITRA",'H1.NAMACC','H1.TYPE_BAST','H1.TGL_BAST','TO_NUMBER(H1.NILAI_RP_BAST)','H1.DATE_MODIFIED',null); //set column field database for datatable orderable
+	    var $column_search_bast = array('UPPER(H1.PROJECT_NAME)','UPPER(H1.NO_SPK)','UPPER(H1.NAMACC)','UPPER(H1.NAMA_MITRA)','UPPER(H1.NAMA_PM)','H1.PENANDA_TANGAN','H1.NO_KL','H1.SEGMENT','H1.STATUS','H1.SEGMENT','H1.ID_BAST','H1.NO_BAST','UPPER(PIC_MITRA)','UPPER(EMAIL_MITRA)'); //set column field database for datatable searchable
 	    var $order = array('DATE_CREATED' => 'desc'); // default order
 	    
 	    public function _get_all_query_bast($status,$mitra2,$segmen,$customer,$spk){

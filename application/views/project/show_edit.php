@@ -57,35 +57,30 @@
 					<div class="container py-2 mt-4 mb-4">
 					  <!-- timeline item 1 -->
 					  <?php foreach ($remarks as $key => $value) : ?>
-					  	<div class="row">   
-							<!-- timeline item 1 left dot -->
-							    <div class="col-auto text-center flex-column d-none d-sm-flex"	>
-							      <div class="row h-50">
-							        <div class="col">&nbsp;</div>
-							        <div class="col">&nbsp;</div>
-							      </div>
-							      <h5 class="m-2">
-							        <span class="badge badge-pill bg-light border">&nbsp;</span>
-							      </h5>
-							      <div class="row h-50">
-							        <div class="col border-right">&nbsp;</div>
-							        <div class="col">&nbsp;</div>
-							      </div>
-							    </div>
-							    <!-- timeline item 1 event content -->
-							    <div class="col py-2">
-							      <div class="card" style="min-height: 100px;">
-							        <div class="card-body">
-								          <div class="float-right text-muted"><?= $value['DATE_C'] ?><span class="tex-muted">
-								          	<br><span class="text-black"><?=$value['CREATED_BY']?></span>
-								          </span>
-							          </div>
-							          <p class="card-text"><?= $value['REMARKS'] ?></p>
-							        </div>
-							      </div>
-							    </div>
-						
-					  	</div>
+						<div class="row">
+						<div class="col-auto text-center flex-column d-none d-sm-flex">
+						<div class="row h-50">
+						<div class="col border-right">&nbsp;</div>
+						<div class="col">&nbsp;</div>
+						</div>
+						<h5 class="m-2">
+						<span class="badge badge-pill bg-light border">&nbsp;</span>
+						</h5>
+						<div class="row h-50">
+						<div class="col border-right">&nbsp;</div>
+						<div class="col">&nbsp;</div>
+						</div>
+						</div>
+						<div class="col py-2">
+						<div class="card">
+						<div class="card-body">
+						<div class="float-right text-muted"><?= $value['DATE_C'] ?></div>
+						<h5 class="card-title"><?=$value['CREATED_BY']?></h5>
+						<p class="card-text"><?= $value['REMARKS'] ?></p>
+						</div>
+						</div>
+						</div>
+						</div>
 					  <?php endforeach;?>
 					  <!--/row-->
 					</div>
