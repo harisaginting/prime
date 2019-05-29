@@ -18,6 +18,11 @@ class Master extends MY_Controller
         $this->adminView('master/customer');
     }
 
+    function role(){
+        $data['role'] = $this->main_model->get_all_role();
+
+        $this->adminView('master/role',$data);
+    }
 
     function history(){
         $this->adminView('master/index');

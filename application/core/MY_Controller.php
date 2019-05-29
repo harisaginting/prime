@@ -68,7 +68,11 @@ class MY_Controller extends CI_Controller {
 		if(!empty($userid)){
 			return true;			
 		}else{
-			return redirect(base_url().'login');;
+			if($this->uri->segment(1)=="login"){
+				return false;
+			}else{
+				redirect(base_url().'login');
+			}
 		}
 	}
 
@@ -165,7 +169,7 @@ class MY_Controller extends CI_Controller {
     }
 
  	// ENCODE URL
-    function ecapeChar($url) {
+    function escapeChar($url) {
 		   $url = preg_replace('~[^\\pL0-9_]+~u', '-', $url);
 		   $url = trim($url, "-");
 		   $url = iconv("utf-8", "us-ascii//TRANSLIT", $url);
@@ -480,6 +484,24 @@ class MY_Controller extends CI_Controller {
 				# code...
 				break;
 		}
+	}
+
+
+	// AUTH
+	public function doLogout(){
+
+		// logout
+		
+		$this->ci->session->unset_userdata($this->SESS_USERID);
+		$this->ci->session->unset_userdata($this->SESS_USERNAME);		
+		$this->ci->session->unset_userdata($this->SESS_USERROLE);
+		$this->ci->session->unset_userdata($this->SESS_SEGMEN);
+		$this->ci->session->unset_userdata($this->SESS_DIVISION);
+		$this->ci->session->unset_userdata($this->SESS_CATEGORY);
+		$this->ci->session->unset_userdata($this->SESS_EMAIL);
+		$this->ci->session->set_userdata(array('validated' => false));
+		//session_destroy();
+		return true;
 	}
 
 }

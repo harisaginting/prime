@@ -111,9 +111,10 @@
            <?php if(!empty($bast['NO_BAST'])) : ?>  
             <div class="col-md-6" style="margin-bottom: 10px;">
               <label class="mini-label">No. BAST</label>
-                <input type="text" class="form-control" id="no_bast" name="no_bast" value="<?= !empty($bast['NO_BAST']) ? $bast['NO_BAST'] : ''; ?>" readOnly placeholder="<?php if(empty($bast['NO_BAST'])) : ?>Approve BAST to get BAST number<?php endif; ?>">
+                <input type="text" class="form-control" id="no_bast" name="no_bast" value="<?= !empty($bast['NO_BAST']) ? $bast['NO_BAST'] : ''; ?>" readOnly placeholder="Approve BAST to get BAST number">
             </div>
             <?php endif; ?>
+
         <?php if(!empty($bast['ID_PROJECT'])) : ?>    
           
             <div class="col-md-2" style="margin-bottom: 10px;">
@@ -127,9 +128,8 @@
             </div>
 
             <div class="col-md-2" style="margin-bottom: 10px;">
-              <label class="mini-label" style="visibility: hidden;">View Project</label>
-              <a class="btn btn-success btn-brand text-left btn-sm" href="<?= base_url().'project/show/'.$bast['ID_PROJECT'] ?>">
-                <i class="fa fa-location-arrow"></i><span>View Project </span>
+              <a class="btn btn-success text-left btn-sm"  style="float:left;margin-top: 25px;"  href="<?= base_url().'project/show/'.$bast['ID_PROJECT'] ?>">
+                <i class="fa fa-location-arrow"></i>
               </a>
             </div>
         <?php endif; ?> 
@@ -207,7 +207,7 @@
 
           <div class="form-group">
             <label class="mini-label" for="name">KL Date</label>
-            <input type="text" class="form-control date-picker" id="kl_date" name="kl_date" placeholder="MM/DD/YYYY" value="<?= !empty($bast['TGL_KL2']) ? $bast['TGL_KL2'] : ''; ?>" readOnly>
+            <input type="text" class="form-control date-picker" id="kl_date" name="kl_date" placeholder="MM/DD/YYYY" value="<?= !empty($bast['TGL_KL2']) ? $bast['TGL_KL2'] : ''; ?>">
           </div>
       </div>
 
@@ -227,7 +227,7 @@
               <option value="Senior Expert Project Management Office 2" <?= ((!empty($bast['PENANDA_TANGAN']))&&($bast['PENANDA_TANGAN']=='Senior Expert Project Management Office 2')) ? 'selected' : ''; ?>>Senior Expert Project Management Office 2 - Heri Ikhwan Diana</option>
               <option value="Senior Expert Delivery and Integration" <?= ((!empty($bast['PENANDA_TANGAN']))&&($bast['PENANDA_TANGAN']=='Senior Expert Delivery and Integration')) ? 'selected' : ''; ?>>Senior Expert Delivery and Integration - Retno Kurniawati</option>   
           </select>
-        </div>
+        </div> 
 
         <div class="form-group">
             <label class="mini-label" class="control-label ">Term of Payment *</label>
@@ -343,7 +343,7 @@
       </div>
 
 
-      <div id="c_document" class="row m-top-30 <?= !empty($bast['FILENAME_URI'])? '' : 'hidden' ?>">
+      <div id="c_document" class="col-sm-12 <?= !empty($bast['FILENAME_URI'])? '' : 'hidden' ?>" style="margin-top: 30px;">
         <div class="col-md-4 offset-md-4">
           <div class="form-group">
               <input id="document" name="file_bast" type="file" accept="pdf" class="form-control file" >
@@ -381,8 +381,7 @@
                   <?php endif; ?> 
 
                   <?php if(!empty($bast['STATUS'])&&$bast['STATUS']=='CHECK BY ADM') :  ?>\
-                  <option value="<?= $bast['STATUS']; ?>" style="color:#000 !important;"><?= $bast['STATUS']; ?></option>
-                  <option value="CHECK BY ADM" <?= (!empty($bast['STATUS'])&&$bast['STATUS']=='CHECK BY ADM') ? ' selected' : '' ?> >CHECK BY ADMIN</option>  
+                  <option value="<?= $bast['STATUS']; ?>" style="color:#000 !important;">CHECK BY ADMIN</option> 
                       <?php if($bast['PENANDA_TANGAN'] == 'Senior Expert Delivery and Integration' ) : ?>
                           <option value="CHECK BY SE DI" <?= (!empty($bast['STATUS'])&&$bast['STATUS']=='CHECK BY SE DI') ? ' selected' : '' ?> >CHECK BY SE DI</option>
                       <?php endif; ?>
@@ -393,30 +392,26 @@
 
                   <?php if(!empty($bast['STATUS'])&&$bast['STATUS']=='CHECK BY SE PMO' && ( $bast['PENANDA_TANGAN'] =='Senior Expert Project Management Office 1' || $bast['PENANDA_TANGAN'] =='Senior Expert Project Management Office 1' )) :   ?>  
                   <option value="<?= $bast['STATUS']; ?>" style="color:#000 !important;"><?= $bast['STATUS']; ?></option>
-                  <option value="CHECK BY SE PMO" <?= (!empty($bast['STATUS'])&&$bast['STATUS']=='CHECK BY SE PMO') ? ' selected' : '' ?> >CHECK BY SE PMO</option>
                   <option value="APPROVED" <?= (!empty($bast['STATUS'])&&$bast['STATUS']=='APPROVED') ? ' selected' : '' ?> >APPROVED</option>  
                   <option value="REVISION" <?= (!empty($bast['STATUS'])&&$bast['STATUS']=='REVISION') ? ' selected' : '' ?> >REVISION</option>
                   <?php endif; ?> 
 
                   <?php if(!empty($bast['STATUS'])&&$bast['STATUS']=='CHECK BY SE PMO' && ( $bast['PENANDA_TANGAN'] =='Senior Expert Project Management Office 2' || $bast['PENANDA_TANGAN'] =='Senior Expert Project Management Office 2' )) :   ?>  
                   <option value="<?= $bast['STATUS']; ?>" style="color:#000 !important;"><?= $bast['STATUS']; ?></option>
-                  <option value="CHECK BY SE PMO" <?= (!empty($bast['STATUS'])&&$bast['STATUS']=='CHECK BY SE PMO') ? ' selected' : '' ?> >CHECK BY SE PMO</option>
                   <option value="APPROVED" <?= (!empty($bast['STATUS'])&&$bast['STATUS']=='APPROVED') ? ' selected' : '' ?> >APPROVED</option>  
                   <option value="REVISION" <?= (!empty($bast['STATUS'])&&$bast['STATUS']=='REVISION') ? ' selected' : '' ?> >REVISION</option>
                   <?php endif; ?> 
 
                   <?php if(!empty($bast['STATUS'])&&$bast['STATUS']=='CHECK BY SE DI' && $bast['PENANDA_TANGAN'] =='Senior Expert Delivery and Integration') :   ?> 
                   <option value="<?= $bast['STATUS']; ?>" style="color:#000 !important;"><?= $bast['STATUS']; ?></option>
-                  <option value="CHECK BY SE DI" <?= (!empty($bast['STATUS'])&&$bast['STATUS']=='CHECK BY SE DI') ? ' selected' : '' ?> >CHECK BY SE DI</option>
                   <option value="APPROVED" <?= (!empty($bast['STATUS'])&&$bast['STATUS']=='APPROVED') ? ' selected' : '' ?> >APPROVED</option>  
                   <option value="REVISION" <?= (!empty($bast['STATUS'])&&$bast['STATUS']=='REVISION') ? ' selected' : '' ?> >REVISION</option>
                   <?php endif; ?> 
 
                   <?php if(!empty($bast['STATUS'])&&$bast['STATUS']=='CHECK BY SE PMO' &&  $bast['PENANDA_TANGAN'] =='Coordinator Project Management') :   ?> 
-                  <option value="<?= $bast['STATUS']; ?>" style="color:#000 !important;"><?= $bast['STATUS']; ?></option>
-                  <option value="CHECK BY SE PMO" <?= (!empty($bast['STATUS'])&&$bast['STATUS']=='CHECK BY SE PMO') ? ' selected' : '' ?> >CHECK BY SE PMO</option>
-                  <option value="APPROVED" <?= (!empty($bast['STATUS'])&&$bast['STATUS']=='APPROVED') ? ' selected' : '' ?> >APPROVED</option>  
-                  <option value="CHECK BY COORD" <?= (!empty($bast['STATUS'])&&$bast['STATUS']=='CHECK BY SE COORD') ? ' selected' : '' ?> >CHECK BY COORD</option> 
+                  <option value="<?= $bast['STATUS']; ?>" style="color:#000 !important;"><?= $bast['STATUS']; ?></option> 
+                  <option value="CHECK BY COORD" <?= (!empty($bast['STATUS'])&&$bast['STATUS']=='CHECK BY SE COORD') ? ' selected' : '' ?> >CHECK BY OSM SERVICE DELIVERY</option>
+                  <option value="APPROVED" <?= (!empty($bast['STATUS'])&&$bast['STATUS']=='APPROVED') ? ' selected' : '' ?> >APPROVED</option> 
                   <option value="REVISION" <?= (!empty($bast['STATUS'])&&$bast['STATUS']=='REVISION') ? ' selected' : '' ?> >REVISION</option>
                   <?php endif; ?> 
 
@@ -463,7 +458,7 @@
                   <?php endif; ?>
             </select>
             <span class="input-group-append">
-              <button class="btn btn-success btn-sm" id="btn_update" type="button"><i class="fa fa-play-circle"></i>
+              <button class="btn btn-primary btn-sm" id="btn_update" type="button"><i class="fa fa-play-circle"></i>
                  <span>&nbsp; Update</span>
               </button>
             </span>
@@ -487,6 +482,19 @@
 
      
     </form>
+  
+
+      <?php if (!empty($symptoms)) : ?>
+      <div class="col-sm-12" style="margin-bottom: 20px;">
+        <label class="mini-label"> <strong>Revision Remarks</strong></label>
+        <ul class="list-group">
+           <?php foreach ($symptoms as $key => $value) : ?>
+             <li class="list-group-item"><span style="font-size: 12px;"><?= $value['TIME'] ?>, <strong><?= $value['REASON'] ?></strong> </span></li>
+           <?php endforeach; ?>
+        </ul>
+      </div>
+      <?php endif; ?>
+
       <div class="col-sm-12">
           <label class="mini-label"><strong>History Approval</strong></label>
           <?php if(!empty($history)) : ?>
@@ -495,24 +503,24 @@
               <div class="row">
               <div class="col-auto text-center flex-column d-none d-sm-flex">
               <div class="row h-50">
-              <div class="col border-right">&nbsp;</div>
+              <div class="col border-right-history">&nbsp;</div>
               <div class="col">&nbsp;</div>
               </div>
               <h5 class="m-2">
-              <span class="badge badge-pill <?=  $key == 0 ? 'bg-success' : 'bg-light' ?>  border ">&nbsp;</span>
+              <span class="badge badge-pill <?= $value['STATUS'] == 'REVISION' ? 'bg-warning' : ($key == 0 ?  'bg-success'  : 'bg-light') ?> border ">&nbsp;</span>
               </h5>
               <div class="row h-50">
-              <div class="col border-right">&nbsp;</div>
+              <div class="col border-right-history">&nbsp;</div>
               <div class="col">&nbsp;</div>
               </div>
               </div>
-              <div class="col py-2">
+              <div class="col">
               <div class="card">
-              <div class="card-body <?=  $key == 0 ? 'bg-success' : 'bg-light' ?>">
+              <div class="card-body <?= $value['STATUS'] == 'REVISION' ? 'bg-warning' : ($key == 0 ?  'bg-success'  : 'bg-light') ?>">
               <div class="float-right">
                 <img class="img-timeline" src="<?= !empty($history[$key]['PHOTO_USER']) ? $history[$key]['PHOTO_USER'] : base_url().'assets/img/avatars/default.png';?>" alt="?= $value['NAME_USER'] ?>" style="float: right;">
                 
-                <span style="margin-right: 20px;"><strong><?= $value['NAME_USER'] ?></strong>,<?= $value['TIME'] ?></span>
+                <span style="margin-right: 20px;"><strong><?= $value['NAME_USER'] ?></strong>&nbsp;&nbsp;&nbsp;&nbsp;<br><small><?= $value['TIME'] ?></small> </span>
                 
               </div>
               <h5 class="card-title"><?=$value['STATUS']?>
@@ -576,7 +584,7 @@
 
 <script type="text/javascript">
     var Page = function () {  
-     <?php if(!empty($bast['FILENAME_URI'])) : ?>
+          <?php if(!empty($bast['FILENAME_URI'])) : ?>
               $("#document").fileinput({
                   overwriteInitial: false,
                   initialPreview: [
@@ -647,9 +655,13 @@
                     e.stopImmediatePropagation();
                     $('#c_document').addClass('hidden');
                     $('#c_revision_symptoms').addClass('hidden');
+                    $("#document").attr("required",false);
+
+                    var ds = "<?= $bast['STATUS'] ?>";
 
 
                     if($('#status').val()=='DONE'){
+                      $("#document").attr("required",true);
                       $('#c_document').removeClass('hidden');
                       $('#document').fileinput({
                         initialPreview  : false,
@@ -658,7 +670,12 @@
                         showUpload      : false,
                         autoReplace: true,
                         maxFileCount: 1,
-                      }); 
+                      });                       
+                    }
+
+                    if(ds == 'DONE'){
+                          $("#document").attr("required",false);
+                          $('#c_document').removeClass('hidden');
                     }
 
                     if($('#status').val()=='REVISION'){
@@ -806,7 +823,7 @@
                               /**/
                         }
                       }else{
-                        bootbox.alert("Status document has not change!", function(){});
+                        bootbox.alert("Please Change Document Status!", function(){});
                       }
               });
           }

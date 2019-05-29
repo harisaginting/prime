@@ -16,6 +16,9 @@
     <link href="<?= base_url(); ?>assets/css/main.css" rel="stylesheet">
     <link href="<?= base_url(); ?>assets/template/coreui/src/vendors/pace-progress/css/pace.min.css" rel="stylesheet">
     
+    
+    <!-- Bootstrap 3 -->
+    <link href="<?= base_url(); ?>assets/plugin/bootstrap3/css/bootstrap-hgn.css" rel="stylesheet" type="text/css">
 
     <!-- CoreUI and necessary plugins-->
     <script src="<?= base_url(); ?>assets/template/coreui/node_modules/jquery/dist/jquery.min.js"></script>
@@ -103,24 +106,11 @@
           </a>
           <div class="dropdown-menu dropdown-menu-right">
             <div class="dropdown-header text-center">
-              <strong>Settings</strong>
+              <strong><?= $this->session->userdata('nama_sess'); ?></strong>
             </div>
             <a class="dropdown-item" href="#">
               <i class="fa fa-user"></i> Profile</a>
-            <a class="dropdown-item" href="#">
-              <i class="fa fa-wrench"></i> Settings</a>
-            <a class="dropdown-item" href="#">
-              <i class="fa fa-usd"></i> Payments
-              <span class="badge badge-secondary">42</span>
-            </a>
-            <a class="dropdown-item" href="#">
-              <i class="fa fa-file"></i> Projects
-              <span class="badge badge-primary">42</span>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">
-              <i class="fa fa-shield"></i> Lock Account</a>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" href="<?= base_url(); ?>login/logout">
               <i class="fa fa-lock"></i> Logout</a>
           </div>
         </li>

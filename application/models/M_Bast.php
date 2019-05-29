@@ -29,7 +29,7 @@ class M_Bast extends CI_Model {
                     $this->db->set("RECC_START_DATE","TO_DATE('".$value."','MM/DD/YYYY')",FALSE);
                     }
                 else if(($key=='RECC_END_DATE')&&(!empty($key=='RECC_END_DATE'))){
-                    $this->db->set("RECC_START_DATE","TO_DATE('".$value."','MM/DD/YYYY')",FALSE);
+                    $this->db->set("RECC_END_DATE","TO_DATE('".$value."','MM/DD/YYYY')",FALSE);
                     }
                 else{
                     if(!empty($value)){
@@ -111,7 +111,7 @@ class M_Bast extends CI_Model {
                     $this->db->set("RECC_START_DATE","TO_DATE('".$value."','MM/DD/YYYY')",FALSE);
                     }
                 else if(($key=='RECC_END_DATE')&&(!empty($key=='RECC_END_DATE'))){
-                    $this->db->set("RECC_START_DATE","TO_DATE('".$value."','MM/DD/YYYY')",FALSE);
+                    $this->db->set("RECC_END_DATE","TO_DATE('".$value."','MM/DD/YYYY')",FALSE);
                     }
                 else{
                     if(!empty($value)){
@@ -141,6 +141,24 @@ class M_Bast extends CI_Model {
         $total = $this->db->get()->row()->TOTAL;
         $total = $total+1;
         return $total;
+    }
+
+    function add_symptoms($data) {
+        foreach($data as $key => $value){
+            $this->db->set($key , $value);        
+        }
+        $query = $this->db->insert('PRIME_BAST_REVISION_HISTORY');
+        return $query;
+    }
+
+    function get_revision($id){
+        $q = $this->db
+            ->select("PRIME_BAST_REVISION_HISTORY.*, TO_CHAR(DATE_CREATED, 'DD MONTH YYYY [HH24:MI]') TIME")
+            ->from('PRIME_BAST_REVISION_HISTORY')
+            ->where('ID_BAST',$id)
+            ->order_by('DATE_CREATED','DESC')
+            ->get()->result_array();
+        return $q;
     }
 
 }

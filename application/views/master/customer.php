@@ -22,7 +22,6 @@
 									<th style="width: 40%">NAME</th>
 									<th style="width: 20%">SEGMEN</th>
 									<th style="width: 20%">AM</th>
-									<th style="width: 10%"></th>
 								</tr>
 							</thead>
 							 <tbody>
@@ -74,13 +73,6 @@
                     												    });
                                             }
                                             return v;   
-                                    }            
-                                },
-                                {
-                                  mRender : function(data, type, obj){   
-                                  			let dlt 	= "<button class='w-100 text-left btn btn-sm btn-danger btn-brand delete_customer' data-id='"+obj.NIPNAS+"'><i class='fa fa-trash'></i> <span>Delete</span></button>";
-                                  			let edt  	= "<button class='w-100 text-left btn btn-sm btn-info btn-brand edit_customer' data-id='"+obj.NIPNAS+"' ><i class='fa fa-edit'></i> <span>Edit</span></button>";
-                                            return edt+dlt;   
                                     }            
                                 },
                                ],            

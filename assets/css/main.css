@@ -200,3 +200,7 @@ thead{
 .error{
 	color: red;
 }
+
+.border-right-history{
+	border-right: 2px solid #a3a3a3 !important;
+}

@@ -32,7 +32,7 @@ class Bast extends MY_Controller
     function get_all_pic(){
         $q = $this->input->post('q');
         echo json_encode($this->main_model->get_all_pic($q));
-    }
+    } 
 
     function add_proccess(){
         //echo json_encode($this->input->post());die;
@@ -98,8 +98,9 @@ class Bast extends MY_Controller
         $data['list_customer'] = $this->get_customer();
         $data['list_segmen']   = $this->get_segmen();
         $data['list_partner']  = $this->get_partner();
-        $data['history']       = $this->main_model->get_history($id);
         $data['bast']          = $this->main_model->get_bast($id);
+        $data['history']       = $this->main_model->get_history($id);
+        $data['symptoms']      = $this->main_model->get_revision($id);
         $data['p8_bast']       = $this->main_model->get_p8_bast($data['bast']['NO_SPK'],$id);
         $data['evidence']      = @explode(',',$data['bast']['KELENGKAPAN_DELIVERY']);
         
@@ -208,10 +209,10 @@ class Bast extends MY_Controller
         }else if($data['STATUS'] == 'DONE'){
                     $no_bast                = $this->input->post('no_bast');
                     $kode_bast              = explode('/',$no_bast)[0];
-                    $project_name           = strtoupper($this->makeurl($data['PROJECT_NAME']));
-                    $nama_mitra             = strtoupper($this->makeurl($data['NAMA_MITRA']));
+                    $project_name           = strtoupper($this->escapeChar($data['PROJECT_NAME']));
+                    $nama_mitra             = strtoupper($this->escapeChar($data['NAMA_MITRA']));
                     
-                    $targetDir = "../bast/".substr($no_bast, strlen($no_bast)-4)."/".$this->makefoldername($data['NAMA_MITRA']);
+                    $targetDir = "../bast/".substr($no_bast, strlen($no_bast)-4)."/".$this->escapeChar($data['NAMA_MITRA']);
                     if(!is_dir($targetDir)){
                         mkdir($targetDir,0777,true);
                     }
@@ -220,34 +221,7 @@ class Bast extends MY_Controller
                     $uploaded_file = $this->upload_file('file_bast',$targetDir,$newName);
                     
                     $data['FILENAME']     = $uploaded_file['file_name'];
-                    $data['FILENAME_URI'] = $targetDir.'/'.$uploaded_file['file_name'];
-
-                    $progress     = "";
-                    if(!empty($data['PROGRESS_LAPANGAN'])){
-                        $progress = $data['PROGRESS_LAPANGAN'];
-                    }else if($data['TYPE_BAST']=='OTC'){ 
-                        $progress = '100%';
-                    }else if($data['TYPE_BAST']=='RECURRING'){
-                        $progress = $data['RECC_START_DATE'].' - '.$data['RECC_END_DATE'];              
-                    }else if($data['TYPE_BAST']=='TERMIN'){
-                        $progress = $data['NAMA_TERMIN'];}          
-
-                    if(!empty($this->input->post('id_project'))){
-                        $data_project = null;
-                        if($this->Project_model->get_detail_project2($data['ID_PROJECT'])){
-                            $data_project = $this->main_model->getProjectBySPK($data['ID_PROJECT']);    
-                        }
-
-                        if(!empty($data_project)){
-                            $urlEpic        = "http://des.telkom.co.id/epic/index.php/api/project/mitra?id=".$data_project->ID_ROW."&id_lop=".$data_project->ID_LOP_EPIC."&prog_lapangan=".$progress;
-                        } 
-
-                         
-                    }
-                    
-                    $sign           = $this->makeurl($data['PENANDA_TANGAN']);
-                    $evidence       = $this->makeurl($data['KELENGKAPAN_DELIVERY']);
-                    $urlNumero   = "http://numero.telkom.co.id/JSONAPITERIMABAST.aspx?NomorBAST=".$no_bast."&FILEBAST=".base_url().$data['FILENAME_URI']."&NomorSPK=".$data['NO_SPK']."&TanggalBAST=".date('m/d/Y', strtotime($data['TGL_BAST']))."&IDPenandaTangan=".$sign."&IDPM=".$data['NIK_PM']."&ProgressLapangan=".$progress."&KelengkapanDelivery=".$evidence;    
+                    $data['FILENAME_URI'] = $targetDir.'/'.$uploaded_file['file_name'];                    
         }
 
         
@@ -268,7 +242,7 @@ class Bast extends MY_Controller
                         $dataRev['ID'] = $this->getGUID();
                         $dataRev['ID_BAST'] = $id_bast;
                         $dataRev['REASON'] = $value;
-                        $this->main_model->addBASTSymptoms($dataRev);
+                        $this->main_model->add_symptoms($dataRev);
 
                     }
                     $revision_v = ltrim($revision_v, ",");

@@ -99,6 +99,16 @@ class M_Master extends CI_Model {
         return $query;
     }
 
+    function get_all_role(){
+        $query = $this->db
+                    ->select("*")
+                    ->from("PRIME_ROLE")
+                    ->order_by("ROLE_NAME")
+                    ->get()
+                    ->result_array();
+        return $query;
+    }
+
     
 
 }

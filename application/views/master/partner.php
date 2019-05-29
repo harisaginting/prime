@@ -22,7 +22,6 @@
 									<th style="width: 40%">NAME</th>
 									<th style="width: 20%">EMAIL</th>
 									<th style="width: 20%">STATUS</th>
-									<th style="width: 10%"></th>
 								</tr>
 							</thead>
 							 <tbody>
@@ -66,23 +65,16 @@
                                   mRender : function(data, type, obj){   
                                   			let v = "-";
                                   			if(obj.EMAIL != null){
-                                  				let email = obj.EMAIL.split(';');
-                                  				v = "";
+                                  				  let email = obj.EMAIL.split(';');
+                                  				    v = "";
 	                                            email.forEach(function(entry) {
-												    v = entry + "<br>"; 
-												});
-                                  			}
-                                            return v;   
+                      												    v = entry + "<br>"; 
+                      												});
+                                  			    }
+                                          return v;   
                                     }            
                                 },
                                 { mData: 'STATUS'},
-                                {
-                                  mRender : function(data, type, obj){   
-                                  			let dlt 	= "<button class='w-100 text-left btn btn-sm btn-danger btn-brand delete_partner' data-id='"+obj.ID+"'><i class='fa fa-trash'></i> <span>Delete</span></button>";
-                                  			let edt  	= "<button class='w-100 text-left btn btn-sm btn-info btn-brand edit_partner' data-id='"+obj.ID+"' data-email='"+obj.EMAIL+"' ><i class='fa fa-edit'></i> <span>Edit</span></button>";
-                                            return edt+dlt;   
-                                    }            
-                                },
                                ],             
                 });  
     };    
